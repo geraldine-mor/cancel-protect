@@ -1,30 +1,16 @@
-# ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# ![CancelProtect Logo](/documents/readme_images/CancelProtect_logo.svg)
 
-## Template Instructions
 
-Welcome,
+⚠️ ## How to use this repo ⚠️
+1. Fork this repo
+2. In your newly created repo click on the green Code button. 
+3. Then, from the Codespaces tab, click Create codespace on main.
+4. Wait for the workspace to open. (This can take a few minutes).
+5. Open a new terminal and `pip3 install -r requirements.txt`
+6. Open the jupyter_notebooks directory, and click on the notebook you want to open.
+7. Click the kernel button and choose Python Environments.
 
-This is the Code Institute student template for the bring your own data project option in Predictive Analytics. We have preinstalled all of the tools you need to get started. It's perfectly okay to use this template as the basis for your project submissions. Click the `Use this template` button above to get started.
-
-You can safely delete the Template Instructions section of this README.md file and modify the remaining paragraphs for your own project. Please do read the Template Instructions at least once, though! It contains some important information about the IDE and the extensions we use.
-
-## How to use this repo
-
-1. Use this template to create your GitHub project repo
-
-1. In your newly created repo click on the green Code button. 
-
-1. Then, from the Codespaces tab, click Create codespace on main.
-
-1. Wait for the workspace to open. This can take a few minutes.
-
-1. Open a new terminal and `pip3 install -r requirements.txt`
-
-1. Open the jupyter_notebooks directory, and click on the notebook you want to open.
-
-1. Click the kernel button and choose Python Environments.
-
-Note that the kernel says Python 3.12.1 as it inherits from the workspace, so it will be Python-3.12.1 as installed by Codespaces. To confirm this, you can use `! python --version` in a notebook code cell.
+⚠️ Note that the kernel says Python 3.12.8 as it inherits from the workspace, so it will be Python-3.12.8 as installed by Codespaces. To confirm this, you can use `! python --version` in a notebook code cell. ⚠️
 
 ## Cloud IDE Reminders
 
@@ -41,8 +27,50 @@ You can now use the `heroku` CLI program - try running `heroku apps` to confirm 
 
 
 ## Dataset Content
-* Describe your dataset. Choose a dataset of reasonable size to avoid exceeding the repository's maximum size and to have a shorter model training time. If you are doing an image recognition project, we suggest you consider using an image shape that is 100px × 100px or 50px × 50px, to ensure the model meets the performance requirement but is smaller than 100Mb for a smoother push to GitHub. A reasonably sized image set is ~5000 images, but you can choose ~10000 lines for numeric or textual data. 
+As a previous revenue manager, I was interested to apply a deeper data understanding to hospitality data. I found the [hotel booking demand](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand) dataset on [kaggle](https://www.kaggle.com/).
+Further investigation led me to an [article](https://www.sciencedirect.com/science/article/pii/S2352340918315191?via%3Dihub) about the dataset describing it in further detail.
 
+The dataset comprises ~119k rows and 32 columns. Each row represents a hotel booking made at one of 2 Portuguese properties owned by the fictional "TCS Hotels". Each column contains a booking attribute.
+
+| Variable | Meaning | Units |
+| --- | --- | --- |
+| hotel | Which property was booked | City Hotel or Resort Hotel |
+| is_canceled | Whether the booking cancelled or not | 0 for not cancelled, 1 for cancelled |
+| lead_time | How many days prior to arrival date the booking was made | 0 - 737 | 
+| arrival_date_year | Year in which the booking is due to arrive | 2015 - 2017 (changed to 2023-2025 for the purposes of this project) |
+| arrival_date_month | Month in which the booking is due to arrive | January - December | 
+| arrival_date_week_number | Week in the year that the booking is due to arrive in | 1 - 53 | 
+| arrival_date_day_of_month | Day of the month that the booking is due to arrive | 1 - 31 |
+| stays_in_weekend_nights | How many weekend nights (Saturday or Sunday) the booking will stay in the hotel | 0 - 19 |
+| stays_in_week_nights | How many midweek nights (Monday - Friday) the booking will stay in the hotel | 0 - 50 |
+| adults | The number of adults on the booking | 0 - 55 |
+| children | The number of children on the booking | 0 - 10 |
+| babies | The number of babies on the booking | 0 - 10 |
+| meal | The meal package that the customer has pruchased | BB - Bed and breakfast, HB - Half Board, FB - Full Board, SC - Room Only/Undefined |
+| country | Country of origin | 177 unique values ISO 3155-3:2013 format |
+| market_segment | The booking demographic described in terms of market segment | Online TA (Travel Agent), Offline TA/TO (Tour Operator), Groups, Direct, Corporate, Complimentary, Aviation, Undefined |
+| distribution_channel | The booking channel that the booking came through | TA/TO (Travel Agen/Tour Operator), Direct, Corporate, GDS (Global Distribution System), Undefined |
+| is_repeated_guest | Whether the guest has previous bookings with the hotel(s) | 0 - No, 1 - Yes |
+| previous_cancellations | How many bookings the guest has cancelled prevously | 0 - 26 |
+| previous_bookings_not_cancelled | how many bookings the guest has that were not cancelled | 0 - 72 |
+| reserved_room_type | Code of room type reserved - anonymised into alphanetical categories | A - H, P, L |
+| assigned_room_type | Code of room type reserved - anonymised into alphanetical categories | A - I, K | 
+| booking_changes | Number of amendments made to the booking prior to check-in or cancellation | 0 - 21 |
+| deposit_type | Payments made on the booking transaction table prior to arrival or cancellation date | No Deposit - no payment received, Non Refund - payments equal to or exceeding the total cost of stay, Refundable - payments less than the total cost of stay but higher than 0 |
+| agent | Travel agency ID | 1 - 535 |
+| company | Company ID | 6 - 543 |
+| days_in_waiting_list | How long the booking was in the waiting list before confirmed to the customer | 0 - 391 |
+| customer_type | Another breakdown of booking demographics based on the type of booking | Contract - booking has an associated allotment or contract, Group - booking is associated with a group booking, Transient - the booking has no associations to other bookings, Transient-Party - the booking is transient but associated with at least 1 other booking |
+| adr | The sum of all payments received divided by the total nights stayed | -6.38 - 5400 |
+| required_parking_spaces | How many carpark spaces the booking has requested | 0 - 8 |
+| total_of_special_requests | How many special requests the guests have made | 0 - 5 |
+| reservation_status | The final status of the reservation | Canceled - booking cancelled by the customer, Check-Out - customer stayed and has departed, No-Show - customer did not stay and did not cancel the booking |
+| reservation_status_date | The date upon which the booking was last amended | 17/10/2014 - 14/09/2017 |
+
+### Data Limitations
+* The data has no unique identifiers such as booking or customer ID causing ambiguity in the nature of duplicate rows
+* `customer_type`, `market_segment` and `distribution_channel` all largely serve similar functions - splitting the booking into demographics - there is some overlap and confusion much to be expected in the hospitality sector
+* Weekends defined as Saturday & Sunday is not industry standard, Friday/Saturday weekend designations are more common 
 
 ## Business Requirements
 * Describe your business requirements

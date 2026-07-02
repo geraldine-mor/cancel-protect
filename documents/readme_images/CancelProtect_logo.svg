@@ -1,0 +1,118 @@
+<svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#5EA8E0"/>
+      <stop offset="45%" stop-color="#2E72B8"/>
+      <stop offset="100%" stop-color="#134B85"/>
+    </linearGradient>
+
+    <linearGradient id="badgeStroke" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#8FCBF5"/>
+      <stop offset="100%" stop-color="#0B355E"/>
+    </linearGradient>
+
+    <radialGradient id="gloss" cx="50%" cy="0%" r="75%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/>
+      <stop offset="55%" stop-color="#FFFFFF" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="checkGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#DCEEFF"/>
+    </linearGradient>
+
+    <linearGradient id="textCancel" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#173A5E"/>
+      <stop offset="100%" stop-color="#0B2540"/>
+    </linearGradient>
+
+    <linearGradient id="textProtect" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#3E96E0"/>
+      <stop offset="100%" stop-color="#1F5FA0"/>
+    </linearGradient>
+
+    <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#0B2540" flood-opacity="0.35"/>
+    </filter>
+
+    <filter id="softShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#0B2540" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Badge icon -->
+  <g filter="url(#softShadow)">
+    <rect x="20" y="20" width="180" height="180" rx="38" fill="url(#badgeStroke)"/>
+    <rect x="26" y="26" width="168" height="168" rx="33" fill="url(#badgeGrad)"/>
+    <rect x="26" y="26" width="168" height="168" rx="33" fill="url(#gloss)"/>
+
+    <!-- Hotel tower -->
+    <g filter="url(#dropShadow)">
+      <!-- cornice / roofline -->
+      <rect x="66" y="52" width="88" height="8" rx="2" fill="#EAF5FF"/>
+      <!-- building body -->
+      <rect x="72" y="60" width="76" height="118" rx="3"
+            fill="#1B5B9C" fill-opacity="0.35" stroke="#EAF5FF" stroke-width="6"/>
+      <!-- entrance -->
+      <rect x="102" y="158" width="16" height="20" rx="2" fill="#EAF5FF" fill-opacity="0.85"/>
+      <!-- windows, 3 cols x 5 rows -->
+      <g fill="url(#checkGrad)">
+        <rect x="89" y="82" width="10" height="10" rx="1.5"/>
+        <rect x="105" y="82" width="10" height="10" rx="1.5"/>
+        <rect x="121" y="82" width="10" height="10" rx="1.5"/>
+
+        <rect x="89" y="98" width="10" height="10" rx="1.5"/>
+        <rect x="105" y="98" width="10" height="10" rx="1.5"/>
+        <rect x="121" y="98" width="10" height="10" rx="1.5"/>
+
+        <rect x="89" y="114" width="10" height="10" rx="1.5"/>
+        <rect x="105" y="114" width="10" height="10" rx="1.5"/>
+        <rect x="121" y="114" width="10" height="10" rx="1.5"/>
+
+        <rect x="89" y="130" width="10" height="10" rx="1.5"/>
+        <rect x="105" y="130" width="10" height="10" rx="1.5"/>
+        <rect x="121" y="130" width="10" height="10" rx="1.5"/>
+
+        <rect x="89" y="146" width="10" height="10" rx="1.5"/>
+        <rect x="121" y="146" width="10" height="10" rx="1.5"/>
+      </g>
+    </g>
+
+    <!-- Checkmark badge (shield) -->
+    <g filter="url(#dropShadow)">
+      <path d="M152 124
+               L174 134
+               V158
+               C174 174 164 182 152 188
+               C140 182 130 174 130 158
+               V134
+               Z"
+            fill="url(#badgeGrad)" stroke="#EAF5FF" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M139 160 L148 171 L167 141"
+            fill="none" stroke="url(#checkGrad)" stroke-width="7.5"
+            stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- Top gloss highlight bar -->
+  <rect x="26" y="26" width="168" height="60" rx="30" fill="#FFFFFF" opacity="0.15"/>
+
+  <!-- Wordmark -->
+  <g font-family="Arial, Helvetica, sans-serif" font-weight="700">
+    <text x="230" y="118" font-size="58" letter-spacing="0.5" fill="url(#textCancel)" filter="url(#dropShadow)">Cancel<tspan fill="url(#textProtect)">Protect</tspan></text>
+  </g>
+
+  <!-- Divider line -->
+  <rect x="232" y="140" width="470" height="3" rx="1.5" fill="#2E72B8" opacity="0.5"/>
+
+  <!-- Tagline -->
+  <text x="230" y="168" font-family="Arial, Helvetica, sans-serif" font-size="19"
+        letter-spacing="3" fill="#4A6C8C" font-weight="600">
+    BOOKING CANCELLATION INTELLIGENCE
+  </text>
+  <text x="230" y="192" font-family="Arial, Helvetica, sans-serif" font-size="16"
+        letter-spacing="1.5" fill="#7C93A8" font-weight="400">
+    for TCS Hotels
+  </text>
+</svg>
