@@ -37,7 +37,7 @@ The dataset comprises ~119k rows and 32 columns. Each row represents a hotel boo
 | hotel | Which property was booked | City Hotel or Resort Hotel |
 | is_canceled | Whether the booking cancelled or not | 0 for not cancelled, 1 for cancelled |
 | lead_time | How many days prior to arrival date the booking was made | 0 - 737 | 
-| arrival_date_year | Year in which the booking is due to arrive | 2015 - 2017 (changed to 2023-2025 for the purposes of this project) |
+| arrival_date_year | Year in which the booking is due to arrive | 2015 - 2017 |
 | arrival_date_month | Month in which the booking is due to arrive | January - December | 
 | arrival_date_week_number | Week in the year that the booking is due to arrive in | 1 - 53 | 
 | arrival_date_day_of_month | Day of the month that the booking is due to arrive | 1 - 31 |
@@ -46,10 +46,10 @@ The dataset comprises ~119k rows and 32 columns. Each row represents a hotel boo
 | adults | The number of adults on the booking | 0 - 55 |
 | children | The number of children on the booking | 0 - 10 |
 | babies | The number of babies on the booking | 0 - 10 |
-| meal | The meal package that the customer has pruchased | BB - Bed and breakfast, HB - Half Board, FB - Full Board, SC - Room Only/Undefined |
-| country | Country of origin | 177 unique values ISO 3155-3:2013 format |
+| meal | The meal package that the customer has purchased | BB - Bed and breakfast, HB - Half Board, FB - Full Board, SC - Room Only/Undefined |
+| country | Country of origin | 177 unique values ISO 3166-3:2013 format |
 | market_segment | The booking demographic described in terms of market segment | Online TA (Travel Agent), Offline TA/TO (Tour Operator), Groups, Direct, Corporate, Complimentary, Aviation, Undefined |
-| distribution_channel | The booking channel that the booking came through | TA/TO (Travel Agen/Tour Operator), Direct, Corporate, GDS (Global Distribution System), Undefined |
+| distribution_channel | The booking channel that the booking came through | TA/TO (Travel Agent/Tour Operator), Direct, Corporate, GDS (Global Distribution System), Undefined |
 | is_repeated_guest | Whether the guest has previous bookings with the hotel(s) | 0 - No, 1 - Yes |
 | previous_cancellations | How many bookings the guest has cancelled prevously | 0 - 26 |
 | previous_bookings_not_cancelled | how many bookings the guest has that were not cancelled | 0 - 72 |
@@ -73,11 +73,18 @@ The dataset comprises ~119k rows and 32 columns. Each row represents a hotel boo
 * Weekends defined as Saturday & Sunday is not industry standard, Friday/Saturday weekend designations are more common 
 
 ## Business Requirements
-* Describe your business requirements
+**BR1:** TCS Hotels wants to understand cancellation patterns, trends and guest behaviour across their 2 Portuguese properties in order to identify risk factors and develop more effective cancellation defence strategies.
+
+**BR2:** TCS Hotels wants a machine learning model capable of predicting the likelihood of a booking cancellation, accessed through an operational dashboard that supports the reservations team in three ways: a risk report of upcoming arrivals, individual reservation search and a prospective booking risk assessor.
+
+**BR3:** TCS Hotels wants to identify distinct guest booking segments with meaningfully different cancellation profiles, in order to better understand the composition of their demand and inform targeted retention strategies.
 
 
-## Hypothesis and how to validate?
-* List here your project hypothesis(es) and how you envision validating it (them) 
+## Hypotheses 
+### H1: No deposit bookings cancel more than pre-paid bookings.
+* **H2:** Bookings with longer lead times have a higher cancellation rate than last-minute bookings.
+* **H3:** OTA bookings cancel more than direct bookings.
+* **H4:** Distinct guest booking segments exist within the data. These segments exhibit meaningfully different cancellation rates suggesting cancellation risk is not uniform across the customer base.
 
 
 ## The rationale to map the business requirements to the Data Visualizations and ML tasks
