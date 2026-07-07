@@ -1,0 +1,4 @@
+,hypothesis,test,statistic,p_value,effect_size,outcome
+0,H1,Chi-square,χ² = 27650.12,p < 0.001,Cramer's V = 0.48,Rejected
+1,H2,Point-biserial,r_pb = 0.29,p < 0.001,r_pb = 0.29,Accepted
+2,H3,Chi-Square,χ² = 2146.33,p < 0.001,Cramer's V = 0.18,Accepted
