@@ -103,7 +103,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 
 
 ## Hypotheses 
-### H1: No deposit bookings cancel more than pre-paid bookings.
+### H1: No deposit bookings cancel more than deposit-secured bookings.
 * **Validation:** Chi-Square test on `deposit_type` vs `is_canceled`
 * **Visualisation:** Grouped bar chart of cancellation rate by deposit type
 * **Expected Outcome:** Confirmed - no financial commitment reduces cancellation friction
