@@ -115,7 +115,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * **Expected outcome:** Confirmed — longer lead times provide more opportunity for plans to change or to source alternative accommodation
 * **Evaluation Result:** ⚠️
 
-### H3: OTA bookings cancel more than direct bookings.
+### H3: Bookings made through the Online TA market segment have a higher cancellation rate than bookings made through the Direct market segment.
 * **Validation:** Chi-square test on `market_segment` vs `is_canceled`
 * **Visualisation:** Grouped bar chart of cancellation rate by segment
 * **Expected Outcome:** Confirmed - OTAs act as an intermediary and reduce customer loyalty and cancellation friction
