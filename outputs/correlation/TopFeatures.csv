@@ -1,0 +1,15 @@
+,Feature,Raw/Engineered,Pearson,Spearman,PPS,Above Threshold
+1,lead_time,Raw,0.2926925818471917,0.3163574724287057,0.2158716251264604,Yes
+12,country,Raw,n/a,n/a,0.30759362153474207,Yes
+13,market_segment,Raw,n/a,n/a,0.20867496527469578,Yes
+16,previous_cancellations,Raw,0.1101787518980224,0.27041141478972786,0.12067671415200923,Yes
+17,previous_bookings_not_canceled,Raw,-0.0573460763705848,-0.11535326808735401,0.0,Yes
+20,booking_changes,Raw,-0.144801729540962,-0.18429120337243793,0.0,Yes
+21,deposit_type,Raw,n/a,n/a,0.38322456244809805,Yes
+22,agent,Raw,n/a,n/a,0.22092510274582797,Yes
+26,adr,Raw,0.048049511558786555,0.050278977103256066,0.2278478339277394,Yes
+27,required_car_parking_spaces,Raw,-0.1971043857850099,-0.19749541776507296,0.0,Yes
+28,total_of_special_requests,Raw,-0.23482626541403542,-0.25869502154894597,0.0,Yes
+32,lead_time_category,Engineered,n/a,n/a,0.23913899632758287,Yes
+33,has_canceled_before,Engineered,n/a,n/a,0.121613275875291,Yes
+34,country_fe,Engineered,n/a,n/a,0.3089795901148166,Yes
