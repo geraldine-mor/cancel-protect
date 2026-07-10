@@ -327,7 +327,6 @@ Resort Hotel,0,12,2015,July,29,12,4,5,2,0,0,HB,FRA,Online TA,TA/TO,0,0,0,A,A,0,N
 Resort Hotel,0,64,2015,July,29,12,4,5,2,0,0,BB,PRT,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,240,0,0,Transient,125.22,0,1
 Resort Hotel,0,31,2015,July,29,12,4,7,2,0,0,BB,GBR,Offline TA/TO,TA/TO,0,0,0,D,D,0,No Deposit,243,0,0,Transient,123.0,0,0
 Resort Hotel,0,59,2015,July,29,12,4,7,2,0,0,HB,GBR,Offline TA/TO,TA/TO,0,0,0,A,A,0,No Deposit,243,0,0,Contract,130.0,1,1
-Resort Hotel,1,55,2015,July,29,12,4,10,2,0,0,BB,PRT,Offline TA/TO,TA/TO,0,0,0,D,D,2,No Deposit,8,0,0,Contract,133.16,0,1
 Resort Hotel,0,81,2015,July,29,12,2,5,2,0,0,BB,GBR,Offline TA/TO,TA/TO,0,0,0,A,A,0,No Deposit,147,0,0,Transient,78.84,0,0
 Resort Hotel,0,1,2015,July,29,12,1,0,2,0,0,BB,PRT,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,240,0,0,Transient,80.1,0,0
 Resort Hotel,0,34,2015,July,29,12,2,0,2,2,0,BB,BEL,Online TA,TA/TO,0,0,0,G,G,0,No Deposit,240,0,0,Transient,193.0,0,1
@@ -29019,8 +29018,6 @@ Resort Hotel,0,214,2016,October,42,11,2,7,2,0,0,HB,ITA,Groups,Corporate,0,0,0,E,
 Resort Hotel,0,159,2016,October,43,16,2,2,1,0,0,HB,SWE,Groups,Corporate,0,0,0,D,D,0,No Deposit,0,0,0,Transient-Party,58.0,0,0
 Resort Hotel,0,214,2016,October,42,11,2,7,2,0,0,HB,AUT,Groups,Corporate,0,0,0,E,F,3,No Deposit,0,0,0,Transient-Party,81.0,0,0
 Resort Hotel,0,19,2017,March,10,7,0,4,2,0,0,HB,AUT,Direct,Corporate,1,0,1,D,D,0,No Deposit,0,0,0,Transient-Party,75.0,0,0
-Resort Hotel,0,26,2017,March,11,14,0,5,2,0,0,HB,AUT,Direct,Corporate,1,0,2,E,I,1,No Deposit,0,0,0,Transient-Party,40.0,0,1
-Resort Hotel,0,138,2017,March,12,19,2,2,2,0,0,HB,AUT,Direct,Corporate,1,0,2,E,F,1,No Deposit,0,0,122,Transient-Party,80.0,0,0
 Resort Hotel,0,216,2016,October,42,13,2,5,2,0,0,BB,GBR,Offline TA/TO,TA/TO,0,0,0,D,D,0,No Deposit,243,0,0,Contract,46.75,0,1
 Resort Hotel,0,364,2016,October,42,12,2,6,1,0,0,BB,GBR,Groups,Corporate,0,0,0,A,A,2,No Deposit,0,223,0,Transient-Party,60.0,0,0
 Resort Hotel,0,6,2016,October,43,19,0,1,1,0,0,BB,ESP,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,314,0,0,Transient,44.8,0,0
@@ -38085,7 +38082,6 @@ Resort Hotel,0,253,2017,July,27,7,0,2,2,0,0,BB,PRT,Groups,Direct,0,0,0,A,D,0,No 
 Resort Hotel,0,52,2017,July,27,7,0,2,2,2,0,BB,PRT,Online TA,TA/TO,0,0,0,C,C,0,No Deposit,240,0,0,Transient,210.0,0,0
 Resort Hotel,0,253,2017,July,27,7,0,2,2,0,0,BB,PRT,Groups,Direct,0,0,0,A,A,0,No Deposit,0,0,0,Transient,89.1,0,0
 Resort Hotel,0,233,2017,July,27,2,2,5,2,0,0,HB,ROU,Offline TA/TO,TA/TO,0,0,0,E,E,1,No Deposit,11,0,0,Transient,129.7,0,2
-Resort Hotel,0,205,2017,June,26,26,3,10,2,0,0,BB,PRT,Direct,Direct,0,0,0,A,A,2,No Deposit,250,0,0,Transient,111.0,0,0
 Resort Hotel,0,177,2017,July,27,6,1,3,2,0,0,BB,KWT,Online TA,TA/TO,0,0,0,D,D,0,No Deposit,241,0,0,Transient,100.18,0,1
 Resort Hotel,0,52,2017,June,26,30,3,7,2,0,0,HB,GBR,Offline TA/TO,TA/TO,0,0,0,D,D,2,No Deposit,531,0,0,Transient,147.69,0,2
 Resort Hotel,0,291,2017,June,26,30,3,7,2,0,0,HB,GBR,Offline TA/TO,TA/TO,0,0,0,D,D,0,No Deposit,40,0,0,Contract,153.5,0,0
@@ -46575,7 +46571,6 @@ City Hotel,1,7,2016,January,3,11,2,5,1,0,0,BB,ZAF,Online TA,TA/TO,0,0,0,A,A,0,No
 City Hotel,1,12,2016,January,3,12,0,1,2,0,0,BB,PRT,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,69.6,0,0
 City Hotel,1,0,2016,January,3,12,0,1,2,0,0,BB,PRT,Direct,Direct,0,0,0,A,A,0,No Deposit,0,0,0,Transient,89.0,0,0
 City Hotel,0,6,2016,January,3,12,0,1,1,0,0,BB,PRT,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,85.0,1,1
-City Hotel,0,37,2016,January,3,12,0,2,2,0,0,BB,PRT,Online TA,TA/TO,0,0,0,D,D,1,No Deposit,9,0,0,Transient,84.45,0,1
 City Hotel,0,8,2016,January,3,12,0,2,1,0,0,BB,DEU,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,73.9,0,0
 City Hotel,0,6,2016,January,3,12,0,2,2,0,0,SC,CHN,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient-Party,69.5,0,2
 City Hotel,1,18,2016,January,3,12,0,2,2,0,0,BB,ITA,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,73.95,0,0
@@ -48468,6 +48463,7 @@ City Hotel,1,83,2016,March,13,24,1,3,2,0,0,BB,CHE,Online TA,TA/TO,0,0,0,D,D,0,No
 City Hotel,0,84,2016,March,13,24,1,3,2,0,0,SC,ESP,Online TA,TA/TO,0,0,0,A,A,1,No Deposit,9,0,0,Transient-Party,89.75,1,0
 City Hotel,1,82,2016,March,13,24,1,3,2,0,0,BB,DEU,Online TA,TA/TO,0,0,0,D,D,0,No Deposit,9,0,0,Transient,99.45,0,0
 City Hotel,0,82,2016,March,13,24,1,3,2,0,0,BB,CHE,Online TA,TA/TO,0,0,0,D,D,0,No Deposit,9,0,0,Transient,99.45,0,0
+City Hotel,1,35,2016,March,13,25,0,1,2,0,0,BB,PRT,Offline TA/TO,TA/TO,0,0,0,A,A,1,Non Refund,12,0,0,Transient,5400.0,0,0
 City Hotel,1,37,2016,March,13,25,0,1,2,1,0,BB,ESP,Online TA,TA/TO,0,0,0,A,A,1,No Deposit,9,0,0,Transient,143.1,0,1
 City Hotel,1,41,2016,March,13,25,0,2,3,0,0,BB,ESP,Online TA,TA/TO,0,0,0,D,D,0,No Deposit,9,0,0,Transient,159.3,0,0
 City Hotel,1,37,2016,March,13,25,0,1,2,1,0,BB,ESP,Online TA,TA/TO,0,0,0,A,A,3,No Deposit,9,0,0,Transient,143.1,0,1
@@ -78578,7 +78574,6 @@ City Hotel,0,5,2015,October,42,12,1,1,2,0,0,BB,PRT,Groups,TA/TO,0,0,0,A,A,0,No D
 City Hotel,0,5,2015,October,42,12,1,1,2,0,0,BB,PRT,Groups,TA/TO,0,0,0,A,A,0,No Deposit,1,0,0,Transient-Party,138.0,0,0
 City Hotel,0,6,2015,October,42,11,2,1,2,0,0,BB,ESP,Offline TA/TO,TA/TO,0,0,0,A,A,0,No Deposit,83,0,0,Transient,100.8,0,0
 City Hotel,0,2,2015,October,42,13,0,1,2,0,0,BB,PRT,Offline TA/TO,TA/TO,0,0,0,A,D,0,No Deposit,63,0,0,Transient-Party,85.0,0,0
-City Hotel,0,11,2015,October,42,11,2,1,1,0,0,BB,GBR,Corporate,Corporate,0,0,0,A,B,1,No Deposit,95,0,0,Transient-Party,95.0,0,0
 City Hotel,0,20,2015,October,42,11,2,1,1,0,0,BB,PRT,Corporate,Corporate,0,0,0,A,A,0,No Deposit,0,40,0,Transient,65.0,0,0
 City Hotel,0,0,2015,October,42,11,2,1,2,0,0,BB,BRA,Direct,Direct,0,0,0,A,D,1,No Deposit,0,0,0,Transient,114.0,0,0
 City Hotel,0,20,2015,October,42,11,2,1,1,0,0,BB,PRT,Corporate,Corporate,0,0,0,A,A,0,No Deposit,0,40,0,Transient,65.0,0,0
@@ -102619,7 +102614,6 @@ City Hotel,0,13,2016,December,50,5,1,0,1,0,0,BB,NLD,Online TA,TA/TO,0,0,0,A,A,0,
 City Hotel,0,13,2016,December,50,5,1,0,1,0,0,BB,NLD,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,96.0,0,0
 City Hotel,0,13,2016,December,50,5,1,0,1,0,0,BB,NLD,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,96.0,0,0
 City Hotel,0,13,2016,December,50,5,1,0,1,0,0,BB,NLD,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,96.0,0,0
-City Hotel,0,13,2016,December,50,5,1,0,1,0,0,BB,NLD,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,96.0,0,0
 City Hotel,0,3,2016,December,50,5,1,0,1,0,0,BB,DEU,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,96.0,0,1
 City Hotel,0,80,2016,December,49,3,2,1,2,0,0,BB,FRA,Offline TA/TO,TA/TO,0,0,0,A,D,0,No Deposit,28,0,0,Transient,75.0,0,0
 City Hotel,0,54,2016,December,50,5,1,0,2,0,0,SC,ESP,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient,79.2,0,2
@@ -110626,7 +110620,6 @@ City Hotel,0,30,2017,April,17,29,2,1,2,0,0,SC,ESP,Online TA,TA/TO,0,0,0,A,A,0,No
 City Hotel,0,30,2017,April,17,29,2,1,2,0,0,SC,ESP,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient-Party,126.33,0,2
 City Hotel,0,30,2017,April,17,29,2,1,2,0,0,SC,ESP,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient-Party,126.33,0,2
 City Hotel,0,30,2017,April,17,29,2,1,2,0,0,SC,ESP,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient-Party,126.33,0,2
-City Hotel,0,30,2017,April,17,29,2,1,2,0,0,SC,ESP,Online TA,TA/TO,0,0,0,A,A,0,No Deposit,9,0,0,Transient-Party,153.33,0,2
 City Hotel,0,140,2017,April,17,28,2,2,2,0,0,BB,FRA,Offline TA/TO,TA/TO,0,0,0,A,A,0,No Deposit,119,0,0,Transient-Party,130.0,0,1
 City Hotel,0,118,2017,April,17,29,2,1,2,0,0,BB,ITA,Online TA,TA/TO,0,0,0,D,D,0,No Deposit,9,0,0,Transient,133.5,0,0
 City Hotel,0,109,2017,April,17,28,2,2,1,0,0,BB,DEU,Online TA,TA/TO,0,0,0,A,A,1,No Deposit,9,0,0,Transient,112.05,0,0
