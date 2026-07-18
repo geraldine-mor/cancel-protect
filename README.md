@@ -1,4 +1,4 @@
-# ![CancelProtect Logo](/documents/readme_images/CancelProtect_logo.svg)
+# ![CancelProtect Logo](/images/CancelProtect_logo.svg)
 
 Developer: Geraldine Morey ([geraldine-mor](https://www.github.com/geraldine-mor))
 
