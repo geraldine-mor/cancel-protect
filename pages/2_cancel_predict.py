@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 from utils.data_management import load_data
+from utils.input_processing import build_input_df
 
 st.image("images/CancelProtect_logo.svg", use_container_width=True)
 
@@ -108,5 +109,9 @@ inputs = {
     "assigned_room_type": ass_room,
     "is_repeated_guest": repeat,
     "previous_cancellations": previous_cancellations,
-    "previous_bookings_not_canceled": previous_completed_bookings
+    "previous_bookings_not_canceled": previous_completed_bookings,
+    "required_car_parking_spaces": parking,
+    "total_of_special_requests": special_requests
 }
+
+st.dataframe(build_input_df(inputs))
