@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from utils.data_management import load_data
 from utils.input_processing import build_input_df
+from utils.model import predict_cancellation
 
 st.image("images/CancelProtect_logo.svg", use_container_width=True)
 
@@ -114,4 +115,12 @@ inputs = {
     "total_of_special_requests": special_requests
 }
 
-st.dataframe(build_input_df(inputs))
+predict = st.button("Predict")
+if predict:
+    data = build_input_df(inputs)
+    st.dataframe(data)
+    prediction, probability = predict_cancellation(data)
+    if prediction == 1:
+        st.markdown(f":red-badge[This booking is expected to cancel, cancellation probability is: {probability:.1%}]")
+    elif prediction == 0:
+        st.markdown(f"green-badge[This booking only has a {probability:.1%} chance of cancellation]")
