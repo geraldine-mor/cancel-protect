@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 from utils.data_management import load_data
 from utils.input_processing import build_input_df
 from utils.model import predict_cancellation
@@ -31,7 +32,7 @@ with col3:
     los = st.number_input("Nights", min_value=1, max_value=100, format="%d")
 
 with col4:
-    adr = st.number_input("Price per night", format="%0.2f")
+    adr = st.number_input("Price per night", min_value=0, format="%0.2f")
    
 with col5:
     adults = st.number_input("Adults", min_value=1, max_value=4, step=1)
@@ -62,9 +63,7 @@ with col13:
     special_requests = st.number_input("Special Requests", min_value=0, max_value=10, step=1)
 
 with col14:
-    req_room = st.selectbox("Requested Room Type", df["reserved_room_type"].unique()) # Check on excel sheet if Resort & City hotels have non-shared room types
-    # If so conditional to display appropriate room types
-    # Create dummy names for the room types and map to letter categories
+    req_room = st.selectbox("Requested Room Type", df["reserved_room_type"].unique()) 
 
 with col15:
     ass_room = st.selectbox("Allocated Room Type", df["assigned_room_type"].unique())
@@ -75,9 +74,10 @@ with col16:
 with col17:
     agency = st.radio("Is this an agency booking?", ["No", "Yes"])
     if agency == "Yes":
-        agent = st.number_input("Agent ID", min_value=1, max_value=df["agent"].max().astype("int64"))
+        agent_ids = pd.Series(df["agent"].dropna().unique()).sort_values()
+        agent = st.selectbox("Agent ID", options=agent_ids)
     else:
-        agent = 0
+        agent = np.nan  
 
 with col18:
     repeat = st.radio("Is this a repeat guest?", ["No", "Yes"])
@@ -115,12 +115,14 @@ inputs = {
     "total_of_special_requests": special_requests
 }
 
-predict = st.button("Predict")
+predict = st.button(":blue[**Predict**]")
 if predict:
     data = build_input_df(inputs)
-    st.dataframe(data)
+    
     prediction, probability = predict_cancellation(data)
     if prediction == 1:
-        st.markdown(f":red-badge[This booking is expected to cancel, cancellation probability is: {probability:.1%}]")
+        st.markdown(f":red-badge[This booking is expected to cancel, probability of cancellation is: {probability:.1%}]")
     elif prediction == 0:
-        st.markdown(f"green-badge[This booking only has a {probability:.1%} chance of cancellation]")
+        st.markdown(f":green-badge[This booking is not expeted to cancel, it has a {probability:.1%} chance of cancellation]")
+
+    st.dataframe(data)

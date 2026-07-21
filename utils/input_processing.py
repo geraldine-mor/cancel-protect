@@ -39,7 +39,7 @@ def build_input_df(raw_inputs: dict) -> pd.DataFrame:
     elif raw_inputs["is_repeated_guest"] == "Yes":
         df['is_repeated_guest'] = 1
     df[DROP_COLS] = np.nan
-    df.drop(columns=["arrival_date", "los"])
+    df = df.drop(columns=["arrival_date", "los"])
 
     return df[FEATURE_ORDER]
 
