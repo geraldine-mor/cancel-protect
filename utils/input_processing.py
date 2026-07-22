@@ -9,9 +9,9 @@ FEATURE_ORDER = ['hotel', 'lead_time', 'arrival_date_year',
                  'meal', 'country', 'market_segment', 'distribution_channel',
                  'is_repeated_guest', 'previous_cancellations',
                  'previous_bookings_not_canceled', 'reserved_room_type',
-                 'assigned_room_type', 'booking_changes', 'deposit_type',
-                 'agent', 'company', 'days_in_waiting_list', 'customer_type',
-                 'adr', 'required_car_parking_spaces', 'total_of_special_requests']
+                 'deposit_type', 'agent', 'company', 'days_in_waiting_list',
+                 'customer_type', 'adr', 'required_car_parking_spaces',
+                 'total_of_special_requests']
 
 DROP_COLS = ["arrival_date_year", "arrival_date_week_number", "company", "deposit_type"]
 
@@ -25,11 +25,14 @@ def build_input_df(raw_inputs: dict) -> pd.DataFrame:
     df['arrival_date_day_of_month'] = raw_inputs['arrival_date'].day
     df['stays_in_week_nights'], df['stays_in_weekend_nights'] = midweek_weekend_nights(
         raw_inputs['arrival_date'], raw_inputs["los"])
-    # New bookings don't have waitlist or changes yet
-    df['booking_changes']  = 0
-    df['days_in_waiting_list'] = 0
+
+    if raw_inputs["waitlist"] == "No":
+        df["days_in_waiting_list"] = 0
+    elif raw_inputs["waitlist"] == "Yes":
+        df['days_in_waiting_list'] = (date.today() - raw_inputs["waitlist_date"]).days
     # Change format to match training data
     df["meal"] = meal_code(raw_inputs["meal"])
+    df["reserved_room_type"] = room_code(raw_inputs["hotel"], raw_inputs["reserved_room_type"])
     
     if raw_inputs["country"] == "Unknown":
        df["country"] = np.nan 
@@ -68,3 +71,26 @@ def meal_code(meal_plan: str):
         return "SC"
     else:
         return "Undefined"
+
+
+# Convert reserved room type to letter code
+def room_code(hotel: str, room_type: str):
+    resort_rooms = {
+        "Standard": "A", "Other Db/Tw": "B",
+        "Standard Family": "C", "Superior": "D",
+        "Premium": "E", "Deluxe": "F",
+        "Superior Family": "G", "Premium Family": "H",
+        "Other": "L"
+    }
+
+    city_rooms = {
+        "Standard": "A", "Economy": "B",
+        "Other": "C", "Superior": "D",
+        "Premium": "E", "Standard Family": "F",
+        "Superior Family": "G"
+    }
+
+    if hotel == "City Hotel":
+        return city_rooms[room_type]
+    elif hotel == "Resort Hotel":
+        return resort_rooms[room_type]
