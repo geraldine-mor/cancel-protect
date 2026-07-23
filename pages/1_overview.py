@@ -1,6 +1,8 @@
 import streamlit as st
 
-st.image("images/CancelProtect_logo.svg", use_container_width=True)
+img_col1, img_col2 = st.columns(2)
+with img_col1:
+    st.image("images/CancelProtect_logo.svg", width="stretch")
 
 st.title("Dashboard Overview")
 

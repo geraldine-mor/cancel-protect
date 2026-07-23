@@ -1,11 +1,13 @@
-# ![CancelProtect Logo](/images/CancelProtect_logo.svg)
+# [![CancelProtect Logo](/images/CancelProtect_logo.svg)](https://cancel-protect-03ac919826b5.herokuapp.com/)
 
 Developer: Geraldine Morey ([geraldine-mor](https://www.github.com/geraldine-mor))
 
 [![GitHub commit activity](https://img.shields.io/github/commit-activity/t/geraldine-mor/cancel-protect)](https://www.github.com/geraldine-mor/cancel-protect/commits/main)
 [![GitHub last commit](https://img.shields.io/github/last-commit/geraldine-mor/cancel-protect)](https://www.github.com/geraldine-mor/cancel-protect/commits/main)
 [![GitHub repo size](https://img.shields.io/github/repo-size/geraldine-mor/cancel-protect)](https://www.github.com/geraldine-mor/cancel-protect)
-[![badge](https://img.shields.io/badge/deployment-Heroku-purple)](⚠️)
+[![badge](https://img.shields.io/badge/deployment-Heroku-purple)](https://cancel-protect-03ac919826b5.herokuapp.com/)
+
+# Link to live site: [CancelProtect](https://cancel-protect-03ac919826b5.herokuapp.com/)
 
 ⚠️ ## How to use this repo ⚠️
 1. Fork this repo
@@ -205,7 +207,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Project background, TCS Hotels business context, and summary of the 3 Business Requirements
 * Dataset overview and link to source
 * Navigation guide to the remaining pages
-* *Business Requirement: BR1, BR2, BR3
+* *Business Requirement: BR1, BR2, BR3*
 
 ### Page 2: CancelProtect
 * **Risk Report** — mock-live "at-risk arrivals" table for the next 14 days, with a configurable cancellation-probability threshold slider/widget

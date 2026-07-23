@@ -5,7 +5,9 @@ from utils.data_management import load_data
 from utils.input_processing import build_input_df
 from utils.model import predict_cancellation
 
-st.image("images/CancelProtect_logo.svg", use_container_width=True)
+img_col1, img_col2 = st.columns(2)
+with img_col1:
+    st.image("images/CancelProtect_logo.svg", width="stretch")
 
 st.title("Cancellation Predictor")
 
