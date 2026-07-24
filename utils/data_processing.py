@@ -1,10 +1,10 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import streamlit as st
+import ppscore as pps
 from utils.data_management import load_raw, load_clean
 
+@st.cache_data
 def create_cancel_profile(hotel: str) -> pd.DataFrame:
     df = load_raw()
     df = df[df["is_canceled"] == 1]
@@ -33,7 +33,7 @@ def create_cancel_profile(hotel: str) -> pd.DataFrame:
     bins = [-np.inf, 7, 30, 90, np.inf]
     labels = ["Last Minute", "Short Range", "Mid Range", "Long Range"]
 
-    df["adr"] = df["adr"].drop(df[((df["adr"] < 0) | (df["adr"] > 1000))].index)
+    df = df[((df["adr"] > 0) & (df["adr"] <= 1000))]
     cancel_df["Cancelled Before Arrival"] = (arrival_date - cancel_date).dt.days
     cancel_df["Cancelled After Booking"] = (cancel_date - book_date).dt.days
     cancel_df["Estimated Booking Value"] = df["adr"] * cancel_df["Stay Length"]
@@ -167,3 +167,110 @@ def generate_chart_text(data: dict) -> str:
         )
 
     return f"{hotel_phrase}{body}"
+
+
+def group_nationality(df: pd.DataFrame) -> pd.Series:
+    return np.where(df["country"] == "PRT", "Domestic (PRT)", "International")
+
+
+def group_lead_time(df: pd.DataFrame) -> pd.Series:
+    lead_time_bins = [0, 7, 30, 90, df["lead_time"].max() + 1]
+    lead_time_labels = ["0-7 days", "8-30 days", "31-90 days", "90+ days"]
+    df["lead_time_binned"] = pd.cut(
+        df["lead_time"], bins=lead_time_bins, labels=lead_time_labels, right=False)
+    return df["lead_time_binned"]
+
+
+def group_repeat_guest(df: pd.DataFrame) -> pd.Series:
+    return df["is_repeated_guest"].map({0: "No", 1: "Yes"})
+
+
+def group_prior_cancellations(df: pd.DataFrame) -> pd.Series:
+    return np.where(df["previous_cancellations"] > 0, "1+", "0")
+
+
+def group_market_segment(df: pd.DataFrame) -> pd.Series:
+    return df["market_segment"]
+
+
+def group_additional_needs(df: pd.DataFrame) -> pd.Series:
+    has_needs = (df["total_of_special_requests"] > 0) | (df["required_car_parking_spaces"] > 0)
+    return np.where(has_needs, "Yes", "No")
+
+
+def build_guest_profile(df: pd.DataFrame) -> pd.DataFrame:
+    fields = {
+        "Nationality": group_nationality,
+        "Lead Time": group_lead_time,
+        "Market Segment": group_market_segment,
+        "Repeat Guest": group_repeat_guest,
+        "Prior Cancellations": group_prior_cancellations,
+        "Additional Needs": group_additional_needs,
+    }
+    rows = []
+    for label, group_fn in fields.items():
+        summary = (
+            df.assign(_group=group_fn(df))
+            .groupby("_group", observed=True)["is_canceled"]
+            .agg(["mean", "count"])
+            .reset_index()
+        )
+        summary["% of Total Bookings"] = summary["count"] / len(df)
+        summary.insert(0, "Characteristic", label)
+        summary.columns = ["Characteristic", "Group", "Cancellation Rate", "Bookings", "% of Total Bookings"]
+        rows.append(summary)
+
+    guest_profile = pd.concat(rows, ignore_index=True).style.background_gradient(cmap="Blues")
+    guest_profile = guest_profile.format({
+        "Cancellation Rate": "{:.0%}",
+        "% of Total Bookings": "{:.0%}"
+    })
+
+    return guest_profile
+
+
+# Copied from notebook 05_correlation_study
+def pps_predictions(df: pd.DataFrame) -> pd.DataFrame:
+    pps_df = df.copy()
+
+    pps_df["is_canceled"] = pps_df["is_canceled"].astype("category")
+
+    pps_predict = pps.predictors(pps_df, y="is_canceled", sample=None)
+    pps_predict.sort_values(by="ppscore", ascending=False)
+    pps_plot_df = pps_predict[pps_predict["ppscore"] > 0].sort_values(by="ppscore", ascending=False) 
+
+    return pps_plot_df
+
+
+def correlations(df: pd.DataFrame) -> pd.DataFrame:
+    numeric_features = [
+    "lead_time",
+    "stays_in_weekend_nights",
+    "stays_in_week_nights",
+    "adults",
+    "children",
+    "babies",
+    "previous_cancellations",
+    "previous_bookings_not_canceled",
+    "days_in_waiting_list",
+    "adr",
+    "required_car_parking_spaces",
+    "total_of_special_requests",
+    ]
+
+    corr_df = df[["is_canceled", *numeric_features]]
+
+    comparison = pd.DataFrame({
+        "Pearson": corr_df.corr(method="pearson")["is_canceled"],
+        "Spearman": corr_df.corr(method="spearman")["is_canceled"],
+    }).drop(index="is_canceled")
+
+    return (
+        comparison
+        .reset_index(names="Feature")
+        .melt(
+            id_vars="Feature",
+            var_name="Method",
+            value_name="Value",
+        )
+    )

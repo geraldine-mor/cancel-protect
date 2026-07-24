@@ -6,7 +6,8 @@ import streamlit as st
 from utils.data_management import load_raw, load_clean
 from utils.data_processing import (
     data_prep, overall_cancel_rate, 
-    grouped_cancel_rate, create_cancel_profile)
+    grouped_cancel_rate, create_cancel_profile,
+    pps_predictions, correlations)
 
 def cancellation_charts(data: dict):
     df, column_map = data_prep(data)
@@ -52,3 +53,30 @@ def cancel_value_rate(hotel: str):
     sns.violinplot(df, x="Cancel Window Bucket", y="Estimated Booking Value")
     plt.title("Estimated booking value by cancellation window")
     st.pyplot(fig)
+
+
+def pps_features(df: pd.DataFrame):
+    df = pps_predictions(df)
+    fig, ax = plt.subplots()
+    fig.suptitle("PPS against target")
+    ax.set_ylabel("Feature")
+
+    sns.barplot(data=df,
+            x="ppscore",
+            y="x")
+    st.pyplot(fig)
+
+
+def correlation_comparison(df: pd.DataFrame):
+    df = correlations(df)
+    fig, ax = plt.subplots(figsize=(8, 6))
+    fig.suptitle("Pearson vs Spearman Correlations")
+
+    sns.barplot(
+        data=df,
+        x="Value",
+        y="Feature",
+        hue="Method",
+        ax=ax)
+    st.pyplot(fig)
+

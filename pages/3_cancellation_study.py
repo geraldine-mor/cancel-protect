@@ -3,24 +3,29 @@ import pandas as pd
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
-from utils.data_management import load_data
-from utils.data_processing import create_cancel_profile, generate_chart_text
-from utils.charts import cancellation_charts, cancel_window_rate, cancel_value_rate
+from utils.data_management import load_clean
+from utils.data_processing import create_cancel_profile, generate_chart_text, build_guest_profile
+from utils.charts import (cancellation_charts, cancel_window_rate, 
+                          cancel_value_rate, pps_features, correlation_comparison)
 
 img_col1, img_col2 = st.columns(2)
 with img_col1:
     st.image("images/CancelProtect_logo.svg", width="stretch")
 
 st.title("Cancellation Study")
+st.info("""
+This page explores cancellation patterns across TCS Hotels' two
+properties to assess potential risk factors.
+""")
 
 cancellation_profile = create_cancel_profile("Combined")
-clean_df = load_data()
+clean_df = load_clean()
 
 kpi_container = st.container(border=True)
 kpi_container.header("KPIs")
 kpi_container.write(
 f"* Total bookings analysed: {len(clean_df)}\n"
-f"* Overall Cancellation Rate: {clean_df["is_canceled"].mean():.0%}\n"
+f"* Overall Cancellation Rate: {clean_df['is_canceled'].mean():.0%}\n"
 f"* Average Room Revenue Per Cancelled Booking: €{
     cancellation_profile["Estimated Booking Value"].mean():.2f}\n"
 )
@@ -61,6 +66,7 @@ with st.expander(label="Cancellation Timing & Value"):
     with col2:
         cancel_value_rate(select_hotel)
 
+    # ⚠️ Consider adding a conditional if select_hotel == to display only relevant paragraph
     st.write("""
             Cancellation volume rises steadily with notice window across both
              properties - long-range cancellations (90+ days out) are the most
@@ -81,3 +87,50 @@ with st.expander(label="Cancellation Timing & Value"):
              Hotel's highest-value bookings carry the most early-cancellation exposure.
     
             """)
+
+with st.expander(label="Correlation Study and Features of Interest"):
+    st.write("""Linear correlation analysis (Pearson and Spearman) showed weak 
+    relationships between individual features and cancellation outcome, with no 
+    feature exceeding ±0.3""")
+    correlation_comparison(clean_df)
+    st.write("""
+    However, Predictive Power Score analysis revealed several features — notably 
+    deposit type, country, agent, and ADR — with meaningful non-linear predictive
+     relationships not captured by linear correlation alone. This indicates that 
+     cancellation risk is driven more by specific categorical thresholds and 
+     subgroup effects (e.g. non-refundable deposits, repeat-cancellation history) 
+     than by smooth linear trends.
+    """)
+    pps_features(clean_df)
+    st.info("""
+        * Despite its apparent importance, after extensive research, Deposit Type  
+        was removed from the dataset prior to final modelling due to it having 
+        uncertain provenance and its potential to act as a proxy for "is_canceled"
+    """)
+
+with st.expander(label="Guest Behaviour and Booking Profile"):
+    container = st.container(border=False)
+    container.write("This summary reflects both properties combined, drawing together the risk" \
+    "factors explored throughout this page into a single guest profile")
+    container.table(build_guest_profile(clean_df))
+    container.write("""
+    The table breaks the guest profile down into individual risk factors,
+    several of which are explored in more depth in the summary below.
+    """)
+
+st.info("""
+It is indicated that:
+
+* A cancelled booking is most strongly linked to guest history - bookings from guests 
+with a prior cancellation are cancelled again 92% of the time, compared to 34% for guests
+ with a clean history.
+* A cancelled booking typically has a longer lead time - cancellation rate rises steadily
+ from 9% for bookings made within a week of arrival to 51% for bookings made 90+ days out.
+* A Group market segment booking has a 61% chance of cancellation - the highest of any segment.
+However, Online TA's dominant share of total volume means most cancelled bookings will originate
+ from that segment rather than Groups.
+* A cancelled booking typically comes from a guest with no additional needs specified - bookings
+ with special requests or parking cancel at less than half the rate of those without (20% vs. 50%).
+* A cancelled booking is more likely to originate from a domestic (PRT) guest than an international
+ one - 57% vs. 24%.
+""")
