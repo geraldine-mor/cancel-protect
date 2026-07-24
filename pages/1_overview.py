@@ -27,6 +27,7 @@ st.write("""
 """)
 
 st.divider()
+# ⚠️ Add information about each page 
 
 with st.expander(label="Business Requirements"):
     st.write("""
@@ -74,6 +75,8 @@ st.markdown("""
 """)
 
 st.divider()
+
+# ⚠️ Add expander to contain information about the dataset
 
 with st.expander(label="Dashboard Limitations"):
     st.warning("""

@@ -1,8 +1,4 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
 from utils.data_management import load_clean
 from utils.data_processing import create_cancel_profile, generate_chart_text, build_guest_profile
 from utils.charts import (cancellation_charts, cancel_window_rate, 
@@ -103,8 +99,8 @@ with st.expander(label="Correlation Study and Features of Interest"):
     """)
     pps_features(clean_df)
     st.info("""
-        * Despite its apparent importance, after extensive research, Deposit Type  
-        was removed from the dataset prior to final modelling due to it having 
+        * Despite its apparent importance, after extensive research, Deposit Type
+         was removed from the dataset prior to final modelling due to it having 
         uncertain provenance and its potential to act as a proxy for "is_canceled"
     """)
 
@@ -127,8 +123,6 @@ with a prior cancellation are cancelled again 92% of the time, compared to 34% f
 * A cancelled booking typically has a longer lead time - cancellation rate rises steadily
  from 9% for bookings made within a week of arrival to 51% for bookings made 90+ days out.
 * A Group market segment booking has a 61% chance of cancellation - the highest of any segment.
-However, Online TA's dominant share of total volume means most cancelled bookings will originate
- from that segment rather than Groups.
 * A cancelled booking typically comes from a guest with no additional needs specified - bookings
  with special requests or parking cancel at less than half the rate of those without (20% vs. 50%).
 * A cancelled booking is more likely to originate from a domestic (PRT) guest than an international

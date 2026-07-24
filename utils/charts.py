@@ -1,13 +1,14 @@
-import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
+import matplotlib.ticker as mticker
 from utils.data_management import load_raw, load_clean
 from utils.data_processing import (
     data_prep, overall_cancel_rate, 
     grouped_cancel_rate, create_cancel_profile,
-    pps_predictions, correlations)
+    pps_predictions, correlations, hypothesis_1_crosstab,
+    hypothesis_2_crosstab, hypothesis_3_crosstab)
 
 def cancellation_charts(data: dict):
     df, column_map = data_prep(data)
@@ -80,3 +81,53 @@ def correlation_comparison(df: pd.DataFrame):
         ax=ax)
     st.pyplot(fig)
 
+
+def hypothesis_bar_plot(df: pd.DataFrame):
+    h1_df = hypothesis_1_crosstab(df)
+
+    fig, ax = plt.subplots()
+   
+    h1_df.plot(kind="bar", ax=ax)
+    ax.yaxis.set_major_formatter(
+        mticker.PercentFormatter(xmax=1, decimals=0))
+    ax.set_title("Cancellation Rate by Deposit Type")
+    plt.xticks(rotation=0)
+    st.pyplot(fig)
+
+
+def hypothesis_2_plot(df: pd.DataFrame):
+    h2_df = hypothesis_2_crosstab(df)
+
+    fig, ax = plt.subplots()
+
+    h2_df.plot(kind="bar", ax=ax)
+    ax.yaxis.set_major_formatter(
+        mticker.PercentFormatter(xmax=1, decimals=0))
+    ax.set_title("Cancellation Rate by Lead Time Band")
+    plt.xticks(rotation=0)
+    st.pyplot(fig)
+
+
+def hypothesis_3_plot(df: pd.DataFrame):
+    h3_df, ota_direct = hypothesis_3_crosstab(df)
+
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
+
+    h3_df.plot(kind="bar", ax=ax1)
+    ax1.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
+    ax1.axhline(y=df["is_canceled"].mean(), linestyle="--", color="black",
+                label="Overall cancellation rate")
+    plt.legend()
+    ax1.set_title("Cancellation Rate Direct and Online TA")
+    ax1.tick_params(axis="x", labelrotation=0)
+    ax1.set_ylabel("Cancellation Rate")
+    ax1.set_xlabel("Market Segment")
+
+    sns.countplot(data=ota_direct, x="market_segment",
+                  hue="is_canceled", ax=ax2)
+    ax2.set_title("Total Bookings Direct and Online TA")
+    ax2.set_ylabel("Number of Bookings")
+    ax2.set_xlabel("Market Segment")
+
+    plt.tight_layout()
+    st.pyplot(fig)

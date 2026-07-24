@@ -274,3 +274,32 @@ def correlations(df: pd.DataFrame) -> pd.DataFrame:
             value_name="Value",
         )
     )
+
+
+def hypothesis_1_crosstab(df: pd.DataFrame) -> pd.DataFrame:
+    h1_df = pd.crosstab(df["deposit_type"], df["is_canceled"], normalize="index")
+    h1_df.columns = ["not_canceled", "canceled"]
+
+    return h1_df
+
+
+def hypothesis_2_crosstab(df: pd.DataFrame) -> pd.DataFrame:
+    bins = [-np.inf, 7 ,30 ,90, np.inf]
+    lead_time = pd.cut(df["lead_time"], bins, labels=["Last Minute", "Short Range",
+                                                      "Mid Range", "Long Range"])
+    
+    df["lead_time"] = lead_time
+    h2_df = pd.crosstab(df["lead_time"], df["is_canceled"], normalize="index")
+    h2_df.columns = ["not_canceled", "canceled"]
+
+    return h2_df
+
+
+def hypothesis_3_crosstab(df: pd.DataFrame) -> pd.DataFrame:
+    features = ["Online TA", "Direct"]
+    ota_direct = df[df["market_segment"].isin(features)]
+
+    h3_df = pd.crosstab(ota_direct["market_segment"], ota_direct["is_canceled"], normalize="index")
+    h3_df.columns = ["Not Cancelled", "Cancelled"]
+
+    return h3_df, ota_direct
