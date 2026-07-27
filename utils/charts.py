@@ -2,6 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
+import numpy as np
 import matplotlib.ticker as mticker
 from utils.data_management import load_raw, load_clean
 from utils.data_processing import (
@@ -131,3 +132,18 @@ def hypothesis_3_plot(df: pd.DataFrame):
 
     plt.tight_layout()
     st.pyplot(fig)
+
+
+def plot_confusion_matrix(tn, fp, fn, tp, title):
+    cm = np.array([[tn, fp], [fn, tp]])
+
+    fig, ax = plt.subplots()
+    sns.heatmap(cm, annot=True, fmt="d", cmap="winter",
+                xticklabels=["Not Cancelled", "Cancelled"],
+                yticklabels=["Not Cancelled", "Cancelled"],
+                ax=ax)
+
+    ax.set_title(title)
+    ax.set_ylabel("Actual")
+    ax.set_xlabel("Predicted")
+    return fig

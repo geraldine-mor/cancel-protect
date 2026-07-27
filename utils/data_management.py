@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import json
 
 @st.cache_data
 def load_data():
@@ -23,3 +24,10 @@ def load_clean():
 @st.cache_resource
 def load_pipeline(pipeline_path):
     return joblib.load(filename=pipeline_path)
+
+
+@st.cache_data
+def load_evaluation_metrics():
+    with open(
+        "outputs/ml_pipeline/cancel_predict/v2/evaluation_metrics.json") as f:
+        return json.load(f)

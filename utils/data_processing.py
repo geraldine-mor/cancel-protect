@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import ppscore as pps
-from utils.data_management import load_raw, load_clean
+from utils.data_management import load_raw, load_clean, load_evaluation_metrics
 
 @st.cache_data
 def create_cancel_profile(hotel: str) -> pd.DataFrame:
@@ -303,3 +303,18 @@ def hypothesis_3_crosstab(df: pd.DataFrame) -> pd.DataFrame:
     h3_df.columns = ["Not Cancelled", "Cancelled"]
 
     return h3_df, ota_direct
+
+
+def classification_report_table(data: dict) -> pd.DataFrame:
+    data = data.copy()
+    accuracy = data.pop("accuracy")
+
+    df = pd.DataFrame(data).transpose()
+
+    total_suport = df.loc["weighted avg", "support"]
+    df.loc["accuracy"] = [None, None, accuracy, total_suport]
+
+    row_order = ["Not Cancelled", "Cancelled", "accuracy", "macro avg", "weighted avg"]
+    df = df.reindex(row_order)
+
+    return df
