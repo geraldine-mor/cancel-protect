@@ -73,22 +73,88 @@ with col6:
                 "f1-score": st.column_config.NumberColumn(format="%.2f"),
             })
 
-    
-    
-    
 
-# 5. Expander: "How the model was selected and tuned"
-# This is the new section, pulled from notebook 9. Content, in order:
+with st.expander(label="Model Selection and Tuning"):
+    st.info("The binary classification task (Cancelled vs Not Cancelled)"
+            " suggested a tree based algorithm. Several options "
+            "were tested using 5-fold cross validation with recall as the"
+            " primary metric since the main focus is catching cancellations"
+            " and the cost of false alarms is low")
+    
+    st.markdown("""
+        :blue-badge[Model Selection:]
 
-# One line on method: multiple algorithms compared via 5-fold CV, recall as the optimisation metric (tie to business requirement — catching cancellations matters more than avoiding false alarms)
-# Baseline comparison result: tree-based models led, Logistic Regression/GradientBoosting dropped for falling well short of target
-# Class imbalance handling: class weighting applied (not SMOTE/resampling) — worth stating why briefly, since a marker may want to see the reasoning for choosing weighting over resampling, even if it's just one line
-# Effect of weighting: XGBoost jumped from 0.789 → 0.860 mean recall, becoming the clear leader; RandomForest also cleared target but XGBoost was faster and stronger
-# Hyperparameter tuning summary — this is the part doing the 5.7 heavy lifting. A compact table works better here than prose: parameter, values tested, outcome/value carried forward, for both RF and XGB. Keeps it scannable rather than reproducing every bullet from the notebook
-# Final configuration stated plainly: XGBoost, scale_pos_weight, learning_rate=0.2, n_estimators=200, mean CV recall 0.863
-# One line noting RandomForest was the closest competitor and why XGBoost won out (speed + marginally higher recall)
+        The results of the cross-validation testing showed that
+         DecisionTreeClassifier, RandomForestClassifier and XGBClassifier were
+         all close to the target recall value of 0.8 while GradientBoostingClassifier
+         and LogisticRegression (added to provide a baseline) were discounted as they
+         failed to come close to target.
+    """)
 
-# This expander stays collapsed by default so it doesn't compete with the evaluation content for primary attention, but it's there and thorough enough to stand as evidence on its own.
+    st.markdown("""
+        :green-badge[Class Imbalance Handling:]
+
+        Class weighting was chosen over resampling techniques such as SMOTE
+         for two main reasons: several features are one-hot encoded categoricals,
+         and SMOTE's interpolation approach can produce synthetic samples with no
+         valid real-world interpretation for these; and the observed class imbalance
+         (~63/37) was moderate rather than severe, a regime where weighting is
+         generally sufficient without the added pipeline complexity resampling
+         introduces. All candidate models (DecisionTree, RandomForest, XGBoost)
+         support weighting natively, keeping the pipeline simpler and avoiding
+         the risk of resampling-related data leakage between train and test folds.
+    """)
+
+    st.markdown("""
+        DecisionTree, RandomForest, and XGBoost were carried forward from baseline
+         comparison for class-weighting trials. Unlike the other two, DecisionTree
+         did not benefit from weighting — mean recall fell slightly (0.798 → 0.796)
+         rather than improving, and cross-fold stability also worsened (std_score
+         rising from 0.007 to 0.009). RandomForest and XGBoost both improved
+         substantially and cleared the 0.80 target with tighter, more consistent
+         spreads. DecisionTree was therefore dropped at this stage, while the other
+         two proceeded to hyperparameter tuning.
+    """)
+
+    st.markdown("""
+        :violet-badge[Hyperparameter Tuning:]
+
+        The weighted models were tested using cross-validation score with a range
+         of hyperparameters to see if any further improvement could be found:
+
+        | Model | Hyperparameter | Value |  |  |  |  |  |
+        | --- | --- | --- | --- | --- | --- | --- | --- |
+        | RandomForest | max_depth | None | 10 | 20 | 30 | 40 |
+        |  | *Mean Recall:* | 0.839 | 0.779 | 0.845 | 0.844 | 0.840 |
+        |  | n_estimators | 100 | 300 | 500 |
+        |  | *Mean Recall:* | 0.839 | 0.840 | 0.840 |
+        |  | min_samples_leaf | 1 | 2 | 4 |
+        |  | *Mean Recall:* | 0.839 | 0.846 | 0.841 | 
+        | XGBoost | max_depth | 3 | 5 | 7 | 10 |
+        |  | *Mean Recall:* | 0.851 | 0.859 | 0.860 | 0.859 |
+        |  | n_estimators | 100 | 200 | 300 | 500 |
+        |  | *Mean Recall:* | 0.860 | 0.861 | 0.859 | 0.852 |
+        |  | learning_rate | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 |
+        |  | *Mean Recall:* | 0.849 | 0.860 | 0.860 | 0.862 | 0.859 | 0.856 |
+        |  | subsample | 0.6 | 0.8 | 1.0 |
+        |  | *Mean Recall:* | 0.860 | 0.860 | 0.860 |
+        |  | colsample_bytree | 0.6 | 0.8 | 1.0 |
+        |  | *Mean Recall:* | 0.860 | 0.862 | 0.860 |
+    """)
+
+    st.caption(
+        "Note: individual sweeps test one parameter at a time with others held at "
+        "default. The final combined grid search retested top candidates together, "
+        "since hyperparameters can interact — this is why the joint result "
+        "(learning_rate=0.2) differs from, and slightly outperforms, the best "
+        "individually-tested value."
+    )
+
+    st.success("The tuning options were retested via the same 5-fold cross validation"
+           " grid search method and the top performing model was XGBClassifier with"
+           " `scale_pos_weight=<neg_count/pos_count>`, `learning_rate=0.2` and "
+           "`n_estimators=200` producing a mean recall of 0.863")
+
 
 # 6. Feature importance & the leakage investigation
 # As previously scoped — v2 chart as primary visual, ablation before/after table, brief CV confirmation line, cross-reference to Hypothesis Validation H1 rather than re-deriving the stats.
