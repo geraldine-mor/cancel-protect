@@ -102,6 +102,7 @@ with st.expander(label="Correlation Study and Features of Interest"):
         * Despite its apparent importance, after extensive research, Deposit Type
          was removed from the dataset prior to final modelling due to it having 
         uncertain provenance and its potential to act as a proxy for "is_canceled"
+         see [model evaluation page](/model_evaluation#deposit-type-ablation-study)
     """)
 
 with st.expander(label="Guest Behaviour and Booking Profile"):

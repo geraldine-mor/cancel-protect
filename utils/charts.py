@@ -4,7 +4,7 @@ import seaborn as sns
 import streamlit as st
 import numpy as np
 import matplotlib.ticker as mticker
-from utils.data_management import load_raw, load_clean
+from utils.data_management import load_feature_importance
 from utils.data_processing import (
     data_prep, overall_cancel_rate, 
     grouped_cancel_rate, create_cancel_profile,
@@ -118,7 +118,7 @@ def hypothesis_3_plot(df: pd.DataFrame):
     ax1.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
     ax1.axhline(y=df["is_canceled"].mean(), linestyle="--", color="black",
                 label="Overall cancellation rate")
-    plt.legend()
+    ax1.legend()
     ax1.set_title("Cancellation Rate Direct and Online TA")
     ax1.tick_params(axis="x", labelrotation=0)
     ax1.set_ylabel("Cancellation Rate")
@@ -129,6 +129,10 @@ def hypothesis_3_plot(df: pd.DataFrame):
     ax2.set_title("Total Bookings Direct and Online TA")
     ax2.set_ylabel("Number of Bookings")
     ax2.set_xlabel("Market Segment")
+    ax2.legend(
+        title="Booking Status",
+        labels=["Not Cancelled", "Cancelled"]
+    )
 
     plt.tight_layout()
     st.pyplot(fig)
@@ -147,3 +151,11 @@ def plot_confusion_matrix(tn, fp, fn, tp, title):
     ax.set_ylabel("Actual")
     ax.set_xlabel("Predicted")
     return fig
+
+
+def plot_feature_importance():
+    df = load_feature_importance()
+    fig, ax = plt.subplots(figsize=(8, 6))
+    sns.barplot(data=df.head(15), x="Importance", y="Feature", ax=ax)
+    plt.title("Top 15 Feature Importances — Cancellation Prediction")
+    st.pyplot(fig)

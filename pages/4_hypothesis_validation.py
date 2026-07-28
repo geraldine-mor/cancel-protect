@@ -44,8 +44,9 @@ with tab1:
             "A cancellation rate this extreme suggests Non Refund is unlikely"
             " to reflect genuine guest commitment. It more plausibly reflects "
             "an internal booking or operational process - which is also "
-            "why the feature was excluded from the predictive model (see Model"
-            " Evaluation page) despite its strength as a descriptive signal."
+            "why the feature was excluded from the predictive model (see [Model"
+            " Evaluation page](/model_evaluation#deposit-type-ablation-study)) "
+            "despite its strength as a descriptive signal."
         )
 
     with col2:

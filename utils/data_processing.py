@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 import ppscore as pps
-from utils.data_management import load_raw, load_clean, load_evaluation_metrics
+from utils.data_management import load_raw, load_clean
 
 @st.cache_data
 def create_cancel_profile(hotel: str) -> pd.DataFrame:

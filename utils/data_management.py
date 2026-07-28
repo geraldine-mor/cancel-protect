@@ -31,3 +31,11 @@ def load_evaluation_metrics():
     with open(
         "outputs/ml_pipeline/cancel_predict/v2/evaluation_metrics.json") as f:
         return json.load(f)
+
+
+@st.cache_data
+def load_feature_importance():
+    feature_importance_df = pd.read_csv(
+        "outputs/ml_pipeline/cancel_predict/v2/feature_importance.csv"
+    )
+    return feature_importance_df

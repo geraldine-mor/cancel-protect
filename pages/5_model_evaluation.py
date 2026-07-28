@@ -1,7 +1,9 @@
 import streamlit as st
+import pandas as pd
 from utils.data_management import load_evaluation_metrics
 from utils.data_processing import classification_report_table
-from utils.charts import plot_confusion_matrix
+from utils.charts import plot_confusion_matrix, plot_feature_importance
+from utils.model import pipeline_steps
 
 img_col1, img_col2 = st.columns(2)
 with img_col1:
@@ -46,6 +48,44 @@ with col4:
               border=True,
               height="stretch")
 
+with st.expander(label="Prediction Pipeline"):
+    st.info("The final machine learning pipeline consists of 2 pipelines combined:")
+
+    preprocessing, model = pipeline_steps()
+    st.markdown("### Preprocessing Pipeline:")
+
+    # Display separately to avoid truncation
+    pipeline_text = "Pipeline(\n"
+
+    for name, transformer in preprocessing.steps:
+        pipeline_text += f"    ('{name}', {repr(transformer)}),\n"
+
+    pipeline_text += ")"
+
+    st.code(pipeline_text, language="python")
+    pipeline_steps_explained = pd.DataFrame({
+            "Step": ["DropFeatures", "FunctionTransformer", "ArbitraryNumberImputer",
+                     "CategoricalImputer", "Winsorizer", "RareLabelEncoder",
+                     "OrdinalEncoder", "MonthEncoder", "OneHotEncoder"],
+            "Purpose": ["Removes features not used by the final model",
+                        "Replaces 'Undefined' meal type with 'SC'",
+                        "Fills missing 'agent' values with '0'",
+                        "Fills missing 'country' values with the most common value",
+                        "Handles extreme outlier values",
+                        "Combines infrequent country values into 'Other' to handle"
+                        " unseen categories at test time",
+                        "Replaces country codes with unique numeric values",
+                        "Converts month column into 12 binary columns the model can use",
+                        "Converts remaining categorical values into binary columns the model"
+                        " can use"
+                        ]
+        })
+    st.table(pipeline_steps_explained, width="content")
+    st.markdown("### Model:")
+    st.code(model, language="python")
+
+    
+
 results_container = st.container(border=True)
 results_container.header("Model Performance")
 selection = results_container.pills("Please Choose:", ["Train Set", "Test Set"], default="Train Set")
@@ -72,6 +112,17 @@ with col6:
                 "recall": st.column_config.NumberColumn(format="%.2f"),
                 "f1-score": st.column_config.NumberColumn(format="%.2f"),
             })
+
+results_container.markdown(
+    "The model was evaluated on both the training and test sets to check "
+    "whether performance holds up on data it hasn't seen before. Test recall "
+    "for the Cancelled class (0.86) is close to train recall (0.90) — a "
+    "4-point gap — and test accuracy (0.86) sits 3 points below train "
+    "accuracy (0.89). This is a modest, expected level of overfitting,"
+    " the model generalises reasonably well to new bookings, "
+    "and its performance on the test set is what should be trusted as a "
+    "realistic estimate of how it will behave in production."
+)
 
 
 with st.expander(label="Model Selection and Tuning"):
@@ -155,12 +206,65 @@ with st.expander(label="Model Selection and Tuning"):
            " `scale_pos_weight=<neg_count/pos_count>`, `learning_rate=0.2` and "
            "`n_estimators=200` producing a mean recall of 0.863")
 
+with st.expander(label="Feature Importance"):
+    col8, col9, col10 = st.columns([0.1, 0.8, 0.1])
+    with col9:
+        plot_feature_importance()
 
-# 6. Feature importance & the leakage investigation
-# As previously scoped — v2 chart as primary visual, ablation before/after table, brief CV confirmation line, cross-reference to Hypothesis Validation H1 rather than re-deriving the stats.
+    st.markdown("""
+    Feature importance is fairly evenly distributed across the model's inputs, with
+     no single feature dominating the prediction. `market_segment_Online TA` (0.202)
+     and `required_car_parking_spaces` (0.183) are the leading predictors, followed by
+    `previous_cancellations` (0.102) — together these three account for roughly half of
+    total importance.
 
-# 7. Limitations / next steps
-# Short, from your conclusions.
+    The remaining top-15 features show a gradual, expected decline in importance
+    (0.047 down to 0.011), reflecting a model that draws on a broad mix of booking
+    behaviour (`previous_cancellations`, `total_of_special_requests`), booking channel
+    (`market_segment_*`, `distribution_channel_Direct`, `agent`), and customer type
+    (`customer_type_Transient`) rather than relying heavily on any single variable.
 
-# 8. Cross-reference footer
-# Links to Cancellation Study (PPS) and Hypothesis Validation (H1).
+    This balanced profile supports the model's predictive performance not being
+    dependent on any one feature, making it more robust to changes in the underlying
+    booking data over time.
+    """)
+
+    st.warning("""
+    ### Deposit Type Ablation Study:
+    In the initial v1 model, `deposit_type_Non Refund` was identified as the strongest
+     predictor with an importance of 0.685, nearly 9x greater than the next-ranked 
+     feature.
+
+    Deposit type Non Refund had a cancellation rate of 99% (as discovered in the
+     correlation study), and combined with its importance as a predictor, raised
+     concerns that the feature may have been acting as a proxy for `is_canceled`
+
+    Additionally, there are some concerns as to the derivation of the feature:
+    > Value calculated based on the payments identified for the booking in the
+     transaction (TR) table before the booking's arrival or cancellation date.  
+    > Non Refund – a deposit was made in the value of the total stay cost;
+    > — *Hotel booking demand datasets* (Antonio, de Almeida & Nunes, 2019)
+    
+    This wording suggests that the deposit status may not be known at time of
+     booking and as such could actually be a source of data leakage.
+
+    For these reasons, an ablation study was conducted, the model was retrained
+     with `deposit_type` removed to assess whether the model would predict as
+     well with the uncertain feature removed. The results are as follows:
+
+    | Metric (Cancelled class) | With deposit_type | Without deposit_type | Difference |
+    | --- | --- | --- | --- |
+    | Precision | 0.80 | 0.79 | -0.01 |
+    | Recall | 0.86 | 0.86 | 0.00 |
+    | F1-score | 0.83 | 0.82 | -0.01 |
+    | Accuracy | 0.87 | 0.86 | -0.01 |
+
+    To confirm this difference wasn't just an artifact of one particular train/test
+     split, both versions of the model were also compared using 5-fold
+     cross-validation. This confirmed the same result: the small drop in
+     performance was consistent across folds, not a one-off, giving 
+     confidence that removing `deposit_type` is a stable, reliable choice.    
+
+    Given the insignificant impact on model performance and the reasons laid out
+     above, the feature `deposit_type` was removed from the final (v2) model.
+    """)
