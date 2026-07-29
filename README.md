@@ -78,10 +78,11 @@ The dataset comprises ~119k rows and 32 columns. Each row represents a hotel boo
 ### Data Limitations
 * The data has no unique identifiers such as booking or customer ID causing ambiguity in the nature of duplicate rows
 * `customer_type`, `market_segment` and `distribution_channel` all largely serve similar functions - splitting the booking into demographics - there is some overlap and confusion much to be expected in the hospitality sector
-* Weekends defined as Saturday & Sunday is not industry standard, Friday/Saturday weekend designations are more common 
+* Weekends defined as Saturday & Sunday is not industry standard, Friday/Saturday weekend designations are more common
+* During modelling it became apparent that there was are issues with the variable `deposit_type` and it had to be excluded
 
 ## Project Terms and Jargon
-```text
+
 * A customer or guest is the person who will stay at the hotel
 * Hotel or property refers to either of the 2 hotels in the dataset
 * LOS is length of stay
@@ -92,7 +93,6 @@ The dataset comprises ~119k rows and 32 columns. Each row represents a hotel boo
 * ADR is average daily rate
 * Reservation or booking refers to the agreement between guest and property and is also one row of the dataset.
 
-```
 
 ## Business Requirements
 The revenue manager at TCS hotels has requested actionable insights and data-driven recommendations to help reduce cancellations and inform hotel policy making decisions.
@@ -101,51 +101,40 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 
 **BR2:** TCS Hotels wants a machine learning model capable of predicting the likelihood of a booking cancellation, accessed through an operational dashboard that supports the reservations team in three ways: a risk report of upcoming arrivals, individual reservation search and a prospective booking risk assessor.
 
-**BR3:** TCS Hotels wants to identify distinct guest booking segments with meaningfully different cancellation profiles, in order to better understand the composition of their demand and inform targeted retention strategies.
-
-
 ## Hypotheses 
 ### H1: No deposit bookings cancel more than deposit-secured bookings.
 * **Validation:** Chi-Square test on `deposit_type` vs `is_canceled`
 * **Visualisation:** Grouped bar chart of cancellation rate by deposit type
 * **Expected Outcome:** Confirmed - no financial commitment reduces cancellation friction
-* **Evaluation Result:** ⚠️
+* **Evaluation Result:** Rejected - more than 99% of Non Refund bookings cancel
 
 ### H2: Bookings with longer lead times have a higher cancellation rate than last-minute bookings.
 * **Validation:** Point-biserial correlation between `lead_time` and `is_canceled`
 * **Visualisation:** Violin plot of lead time distribution by cancellation status; histogram with KDE overlay
-* **Expected outcome:** Confirmed — longer lead times provide more opportunity for plans to change or to source alternative accommodation
-* **Evaluation Result:** ⚠️
+* **Expected outcome:** Confirmed - longer lead times provide more opportunity for plans to change or to source alternative accommodation
+* **Evaluation Result:** Accepted - cancellation rate rises steadily with booking lead time
 
 ### H3: Bookings made through the Online TA market segment have a higher cancellation rate than bookings made through the Direct market segment.
 * **Validation:** Chi-square test on `market_segment` vs `is_canceled`
 * **Visualisation:** Grouped bar chart of cancellation rate by segment
 * **Expected Outcome:** Confirmed - OTAs act as an intermediary and reduce customer loyalty and cancellation friction
-* **Evaluation Result:** ⚠️
-
-### H4: Distinct guest booking segments exist within the data. These segments exhibit meaningfully different cancellation rates suggesting cancellation risk is not uniform across the customer base.
-* **Validation:** ⚠️ ANOVA/Kruskal-Wallis on cancellation rate across cluster means and/or chi-square on cluster label vs cancellation ⚠️
-* **Visualisation:** Bar chart of cancellation rate by cluster, cluster profile summary
-* **Expected Outcome:** Confirmed - Clear cluster profiles with distinct cancellation patterns
-* **Evaluation Result:** ⚠️
+* **Evaluation Result:** Accepted - Online TAs have a higher cancellation rate than direct bookings
 
 ## Business requirements mapping
 
 | Business Requirement | Task | Epic | Actions |
 | --- | --- | --- | --- |
-| BR1 | Data visualisation and correlation study | E2 | - Inspect the data <br> - Conduct a correlation study to understand how cancellation interacts with other variables<br> - Plot `is_canceled` again the main variables to visualise insights |
+| BR1 | Data visualisation and correlation study | E2 | - Inspect the data <br> - Conduct a correlation study to understand how cancellation interacts with other variables<br> - Plot `is_canceled` against the main variables to visualise insights |
 | BR2 | Classification | E4 | - Build a binary classifier to predict if a booking will cancel<br> - Evaluate model performance |
-| BR3 | Cluster and Data Analysis | E3 | - Build an unsupervised model to cluster the data<br> - Evaluate clusters against `is_canceled` |
 
 ### Epics
 | Epic | Scope | Business Requirement |
 | --- | --- | --- |
 | E1: Data collection and preparation | Sourcing, cleaning and engineering the data | All |
 | E2: Cancellation analysis | EDA, correlation study, hypothesis testing | BR1 |
-| E3: Customer segmentation | Clustering. cluster analysis, profiling | BR3 |
-| E4: Predictive modelling | Classification pipeline, tuning, evaluation | BR2 |
-| E5: Dashboard development | Streamlit pages | All |
-|E6: Deployment | Heroku deployment | All | 
+| E3: Predictive modelling | Classification pipeline, tuning, evaluation | BR2 |
+| E4: Dashboard development | Streamlit pages | All |
+| E5: Deployment | Heroku deployment | All | 
 
 ### User Stories
 |Target | Expectation | Outcome | Epic | MoSCoW |
@@ -154,27 +143,22 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 | As a data practitioner | I want to investigate whether duplicate rows represent genuine bookings or export artefacts | so that I don't discard valid data or retain invalid noise | 1 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) |
 | As a data practitioner | I want to identify and handle outliers and invalid records based on data quality reasoning | so that the model isn't trained on erroneous entries or biased by target-leakage driven cleaning | 1 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) |
 | As a Revenue Manager | I want data quality decisions to be grounded in real-world booking operations | so that cleaning choices reflect how hotels actually take bookings, not just statistical convenience. | 1 | ![Could Have](https://img.shields.io/badge/Could_Have-1d76db) |
-| As a data practitioner | I want to derive booking-level features such as `arrival_date` or `LOS` | so that downstream clustering and modelling can use interpretable, relevant variables | 1 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) |
+| As a data practitioner | I want to derive booking-level features such as `arrival_date` or `LOS` | so that downstream modelling can use interpretable, relevant variables | 1 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) |
 | As a data practitioner | I want to exclude features only known after a booking's outcome (`reservation_status`, `reservation_status_date`) | so that the model only uses information genuinely available at prediction time | 1 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
 | As a data practitioner | I want to clean the dataset | so that the data used for analysis and modelling is accurate, consistent, and free of erroneous or misleading records | 1 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
 | As a Revenue Manager | I want to see how cancellation rate varies across deposit type, lead time, and market segment | so that I can spot early candidate risk factors | 2 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
 | As a data practitioner | I want to quantify numeric correlations and categorical associations against `is_canceled` | so that visual patterns from EDA are backed by statistical evidence | 2 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
 | As a Revenue Manager | I want each cancellation hypothesis statistically tested | so that I can trust the conclusions enough to act on them in policy decisions | 2 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a data practitioner | I want to group bookings into distinct segments using unsupervised learning | so that guest demand composition becomes visible beyond raw categorical fields | 3 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a data practitioner | I want to test whether clusters have meaningfully different cancellation rates | so that segmentation is validated as operationally useful, not just statistically distinct | 3 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a Revenue Manager | I want each segment described in business-relevant terms | so that I can design retention strategies tailored to how each segment actually behaves | 3 | ![Could Have](https://img.shields.io/badge/Could_Have-1d76db) |
-| As a data practitioner | I want to build a classification pipeline predicting `is_canceled` | so that cancellation risk can be estimated for any booking | 4 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a data practitioner | I want to systematically tune model hyperparameters | so that the final model is defensibly the best-performing option considered | 4 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) |
-| As a Revenue Manager | I want the model's performance clearly evaluated against agreed recall/precision targets | so that I know whether I can trust its risk flags before relying on them operationally | 4 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a data practitioner | I want the fitted pipeline saved and reloadable | so that the dashboard can serve live predictions without retraining | 4 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a first-time visitor to the dashboard | I want a summary of the project, dataset and business context | so that I understand what the tool does before using it | 5 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) |
-| As a reservations agent | I want a labelled list of upcoming arrivals with high cancellation risk | so that I can prioritise proactive outreach to only the highest-risk guests | 5 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00)  |
-| As a reservations agent | I want to look up an individual reservation's risk score during a live guest interaction | so that I can make an informed decision on the call | 5 | ![Could Have](https://img.shields.io/badge/Could_Have-1d76db) |
-| As a reservations agent | I want to input a hypothetical booking's attributes and see its predicted risk | so that I can assess risk before a booking is even confirmed | 5 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a Revenue Manager | I want to see visualised cancellation patterns and segment profiles | so that I can understand demand composition at a glance | 5 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a Revenue Manager | I want to see each hypothesis and its statistical outcome in plain language | so that I can trust the analytical conclusions behind the dashboard | 5 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a Revenue Manager | I want clear confirmation of whether the predictive and clustering models meet their stated performance targets | so that I know how much confidence to place in their outputs | 5 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
-| As a data practitioner | I want the app deployable via Heroku-standard config files | so that TCS Hotels' stakeholders can access the dashboard without a local setup | 6 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) | 
+| As a data practitioner | I want to build a classification pipeline predicting `is_canceled` | so that cancellation risk can be estimated for any booking | 3 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
+| As a data practitioner | I want to systematically tune model hyperparameters | so that the final model is defensibly the best-performing option considered | 3 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) |
+| As a Revenue Manager | I want the model's performance clearly evaluated against agreed recall/precision targets | so that I know whether I can trust its risk flags before relying on them operationally | 3 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
+| As a data practitioner | I want the fitted pipeline saved and reloadable | so that the dashboard can serve live predictions without retraining | 3 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
+| As a first-time visitor to the dashboard | I want a summary of the project, dataset and business context | so that I understand what the tool does before using it | 4 | ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) |
+| As a reservations agent | I want to input a hypothetical booking's attributes and see its predicted risk | so that I can assess risk before a booking is even confirmed | 4 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
+| As a Revenue Manager | I want to see visualised cancellation patterns | so that I can understand demand composition at a glance | 4 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
+| As a Revenue Manager | I want to see each hypothesis and its statistical outcome in plain language | so that I can trust the analytical conclusions behind the dashboard | 4 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
+| As a Revenue Manager | I want clear confirmation of whether the predictive model meets its stated performance targets | so that I know how much confidence to place in their outputs | 4 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
+| As a data practitioner | I want the app deployable via Heroku-standard config files | so that TCS Hotels' stakeholders can access the dashboard without a local setup | 5 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) | 
 
 ⚠️ ![Must Have](https://img.shields.io/badge/Must_Have-ff0000)
 ![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) 
@@ -186,58 +170,40 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 **Classification Model**
 * We require an ML model to predict whether a booking will cancel based on historical data
 * The target variable - `is_canceled` - is categorical and contains 2 classes suggesting a *classification model*
-* The ideal outcome is to provide the revenue manager with reliable insights into their booking to inform retention efforts and overbooking strategies 
-* ⚠️ The main model success metric is 80% recall on train and test set
-* ⚠️ Precision should be monitored to avoid an inflated risk report and unnecessary man-hours spent chasing safe bookings or unsafe overbooking levels leading to guests being 'walked' on arrival, with the associated reputation damage and should be in the 60-65% range
-* ⚠️ F2-score weighting recall x2 against precision 
-* ⚠️ The model training data comes from TCS Hotels and contains ~119k rows with 20% to be held back for the test set - ⚠️ features used
-* The model output is a flag indicating that a booking will cancel ⚠️ and/or probability of cancellation
-
-### Clustering 
-**Clustering Model**
-* We require an ML model to cluster similar booking behaviour, an *unsupervised model*
-* The ideal outcome is to provide the revenue manager with a clearer picture of market segmentation 
-* ⚠️ Minimum silhouette score of 0.50 is the main success metric here 
-* ⚠️ Maximum 10 clusters to be considered successful
-* The model training data comes from TCS Hotels and contains ~119k rows - ⚠️ features used
-* The model output is an additional colum appended to the dataset suggesting a cluster designation per booking
+* The ideal outcome is to provide the reservations team with reliable insights into their booking to inform retention efforts and overbooking strategies 
+* The main model success metric is **80% recall** on train and test set
+* Precision should be monitored to avoid unnecessary man-hours spent following-up safe bookings or unsafe overbooking levels leading to guests being 'walked' on arrival, with the associated reputation damage
+* The model is considered a failure if precision for Not Cancelled is less than 85% on train and test set
+* The model training data comes from TCS Hotels and contains ~119k rows with 20% to be held back for the test set 
+* The model output is a flag indicating that a booking will cancel and probability of cancellation
 
 ## Dashboard Design
 ### Page 1: About CancelProtect
-* Project background, TCS Hotels business context, and summary of the 3 Business Requirements
+* Project background, TCS Hotels business context, and summary of the 2 Business Requirements
 * Dataset overview and link to source
 * Navigation guide to the remaining pages
-* *Business Requirement: BR1, BR2, BR3*
+* *Business Requirement: BR1, BR2*
 
 ### Page 2: CancelProtect
-* **Risk Report** — mock-live "at-risk arrivals" table for the next 14 days, with a configurable cancellation-probability threshold slider/widget
-* **Reservation Search** — lookup a booking by reservation number and view its individual cancellation risk score
 * **Variable Inputs** — form for a prospective booking's attributes, returning a predicted cancellation probability/flag
 * *Business Requirement: BR2*
 
 ### Page 3: Cancellation Profiling
 * Descriptive analytics and plots addressing cancellation patterns across the 2 properties (hotel type, deposit type, lead time, market segment, etc.)
-* Cluster segment summary and profiles (linking BR3 findings into a business-facing narrative)
-* Textual interpretation of each plot, tied back to BR1/BR3 conclusions
-* *Business Requirement: BR1, BR3*
+* Textual interpretation of each plot, tied back to BR1 conclusions
+* *Business Requirement: BR1*
 
 ### Page 4: Hypothesis and Validation
-* States each hypothesis (H1–H4), validation method used, and final evaluation verdict
-* Statistical test results (chi-square, point-biserial, cluster significance test) summarised in plain language for a non-technical stakeholder
-* *Business Requirement: BR1, BR3*
+* States each hypothesis (H1–H3), validation method used, and final evaluation verdict
+* Statistical test results (chi-square, point-biserial) summarised in plain language for a non-technical stakeholder
+* *Business Requirement: BR1*
 
 ### Page 5: Predict Cancel Model Performance
 * Model type, training data, and features used
 * Confusion matrix and classification report for train and test sets
-* Clear statement of whether the model met its stated performance requirement (80% recall, 60–65% precision target)
+* Clear statement of whether the model met its stated performance requirement (80% recall, 85% precision target)
 * Feature importance discussion
 * *Business Requirement: BR2*
-
-### Page 6: Cluster Model Performance
-* Clustering method, features used, and number of clusters selected
-* Silhouette score and cluster evaluation against `is_canceled`
-* Clear statement of whether the model met its stated performance requirement (≥0.50 silhouette, ≤10 clusters)
-* *Business Requirement: BR3*
 
 ## Unfixed Bugs
 * You will need to mention unfixed bugs and why they were not fixed. This section should include shortcomings of the frameworks or technologies used. Although time can be a significant variable to consider, paucity of time and difficulty understanding implementation is not a valid reason to leave bugs unfixed.

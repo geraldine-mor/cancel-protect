@@ -39,8 +39,6 @@ with st.expander(label="Business Requirements"):
              cancellation, accessed through an operational dashboard that supports the reservations team in three 
              ways: a risk report of upcoming arrivals, individual reservation search and a prospective booking risk assessor.
 
-             **BR3:** TCS Hotels wants to identify distinct guest booking segments with meaningfully different cancellation 
-             profiles, in order to better understand the composition of their demand and inform targeted retention strategies.
     """)
 
 with st.expander(label="Hypotheses"):
@@ -52,8 +50,6 @@ with st.expander(label="Hypotheses"):
              **H3:** Bookings made through the Online TA market segment have a higher cancellation rate than bookings 
              made through the Direct market segment.
 
-             **H4:** Distinct guest booking segments exist within the data. These segments exhibit meaningfully different
-              cancellation rates suggesting cancellation risk is not uniform across the customer base.
     """)
 
 st.divider()
@@ -64,19 +60,13 @@ st.markdown("""
             * :blue-badge[Prospective Booking] 
                 * Enter values in all form inputs
                 * Click the "Predict" button
-                * Interpret the results
-            * :green-badge[Reservation Search]
-                * Enter reservation number in the search box
-                * Click the "Predict" button
-                * Interpret the results
-            * :violet-badge[Risk Report]
-                * Click the "Generate Report" button 
-                * Interpret the output        
+                * Interpret the results    
 """)
 
 st.divider()
 
 # ⚠️ Add expander to contain information about the dataset
+# ⚠️ Add information about each page and what it is for
 
 with st.expander(label="Dashboard Limitations"):
     st.warning("""
