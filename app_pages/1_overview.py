@@ -72,7 +72,6 @@ with st.expander(label="Dashboard Limitations"):
     st.warning("""
                * This dashboard is a prototype for demonstration and user testing purposes
                * The dashboard is designed to demonstrate the functionality of the final, integrated product
-               * The dashboard operates on a small, synthesised mock-data dataset
                * The model has not yet been tuned for production accuracy
                * The dashboard currently has no security layer
     """)

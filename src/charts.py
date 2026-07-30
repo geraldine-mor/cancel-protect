@@ -24,6 +24,7 @@ def cancellation_charts(data: dict):
             labels=[f"{v:.0%}" for v in rate_df["Cancellation Rate"]])
         plt.ylim(0, 1)
         plt.title("Overall Cancellation Rate")
+        ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
         st.pyplot(fig)
         plt.close(fig)
         
@@ -37,6 +38,7 @@ def cancellation_charts(data: dict):
             ax.containers[0],
             labels=[f"{v:.0%}" for v in grouped["Cancellation Rate"]])
         plt.title(f"Cancellation Rate by {data["choice"]}")
+        ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
         st.pyplot(fig)
         plt.close(fig)
 
