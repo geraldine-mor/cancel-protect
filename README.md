@@ -38,7 +38,7 @@ You can now use the `heroku` CLI program - try running `heroku apps` to confirm 
 As a previous revenue manager, I was interested to apply a deeper data understanding to hospitality data. I found the [hotel booking demand](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand) dataset on [kaggle](https://www.kaggle.com/).
 Further investigation led me to an [article](https://www.sciencedirect.com/science/article/pii/S2352340918315191?via%3Dihub) about the dataset describing it in further detail.
 
-The dataset comprises ~119k rows and 32 columns. Each row represents a hotel booking made at one of 2 Portuguese properties owned by the fictional "TCS Hotels". Each column contains a booking attribute.
+The dataset comprises 119,390 rows and 32 columns. Each row represents a hotel booking made at one of 2 Portuguese properties owned by the fictional "TCS Hotels". Each column contains a booking attribute.
 
 | Variable | Meaning | Units |
 | --- | --- | --- |
@@ -99,7 +99,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 
 **BR1:** TCS Hotels wants to understand cancellation patterns, trends and guest behaviour across their 2 Portuguese properties in order to identify risk factors and develop more effective cancellation defence strategies.
 
-**BR2:** TCS Hotels wants a machine learning model capable of predicting the likelihood of a booking cancellation, accessed through an operational dashboard that supports the reservations team in three ways: a risk report of upcoming arrivals, individual reservation search and a prospective booking risk assessor.
+**BR2:** TCS Hotels wants a machine learning model capable of predicting the likelihood of a booking cancellation, accessed through an operational dashboard that supports the reservations team with a prospective booking risk assessor.
 
 ## Hypotheses 
 ### H1: No deposit bookings cancel more than deposit-secured bookings.
@@ -126,6 +126,10 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 | --- | --- | --- | --- |
 | BR1 | Data visualisation and correlation study | E2 | - Inspect the data <br> - Conduct a correlation study to understand how cancellation interacts with other variables<br> - Plot `is_canceled` against the main variables to visualise insights |
 | BR2 | Classification | E4 | - Build a binary classifier to predict if a booking will cancel<br> - Evaluate model performance |
+
+### Rationale to map the business requirements to the Data Visualisations and ML tasks
+* BR1 is exploratory in nature and best served by visualisation and correlation analysis
+* BR2 requires a predictive capability, which necessitates a classification ML task
 
 ### Epics
 | Epic | Scope | Business Requirement |
@@ -176,11 +180,12 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * The model is considered a failure if precision for Not Cancelled is less than 85% on train and test set
 * The model training data comes from TCS Hotels and contains ~119k rows with 20% to be held back for the test set 
 * The model output is a flag indicating that a booking will cancel and probability of cancellation
+* Heuristics: Currently, the reservations team has no systematic method for flagging at-risk bookings and relies on ad-hoc judgement.
 
 ## Dashboard Design
 ### Page 1: About CancelProtect
 * Project background, TCS Hotels business context, and summary of the 2 Business Requirements
-* Dataset overview and link to source
+* State the 3 project Hypotheses
 * Navigation guide to the remaining pages
 * *Business Requirement: BR1, BR2*
 
@@ -201,7 +206,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 ### Page 5: Predict Cancel Model Performance
 * Model type, training data, and features used
 * Confusion matrix and classification report for train and test sets
-* Clear statement of whether the model met its stated performance requirement (80% recall, 85% precision target)
+* Clear statement of whether the model met its stated performance requirement (80% recall (Cancelled), 85% precision (Not Cancelled))
 * Feature importance discussion
 * *Business Requirement: BR2*
 
