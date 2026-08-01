@@ -6,10 +6,11 @@ import numpy as np
 import matplotlib.ticker as mticker
 from src.data_management import load_feature_importance
 from src.data_processing import (
-    data_prep, overall_cancel_rate, 
+    data_prep, overall_cancel_rate,
     grouped_cancel_rate, create_cancel_profile,
     pps_predictions, correlations, hypothesis_1_crosstab,
     hypothesis_2_crosstab, hypothesis_3_crosstab)
+
 
 def cancellation_charts(data: dict):
     df, column_map = data_prep(data)
@@ -24,21 +25,23 @@ def cancellation_charts(data: dict):
             labels=[f"{v:.0%}" for v in rate_df["Cancellation Rate"]])
         plt.ylim(0, 1)
         plt.title("Overall Cancellation Rate")
-        ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
+        ax.yaxis.set_major_formatter(mticker.PercentFormatter(
+            xmax=1, decimals=0))
         st.pyplot(fig)
         plt.close(fig)
-        
-        
+
     elif data["choice"] != "Overall":
         grouped = grouped_cancel_rate(df, data, column_map)
 
         fig, ax = plt.subplots(figsize=(12, 8))
-        sns.barplot(data=grouped, x=data["choice"], y="Cancellation Rate", ax=ax)
+        sns.barplot(
+            data=grouped, x=data["choice"], y="Cancellation Rate", ax=ax)
         ax.bar_label(
             ax.containers[0],
             labels=[f"{v:.0%}" for v in grouped["Cancellation Rate"]])
         plt.title(f"Cancellation Rate by {data["choice"]}")
-        ax.yaxis.set_major_formatter(mticker.PercentFormatter(xmax=1, decimals=0))
+        ax.yaxis.set_major_formatter(
+            mticker.PercentFormatter(xmax=1, decimals=0))
         st.pyplot(fig)
         plt.close(fig)
 
@@ -52,7 +55,7 @@ def cancel_window_rate(hotel: str):
 
 
 def cancel_value_rate(hotel: str):
-    df= create_cancel_profile(hotel)
+    df = create_cancel_profile(hotel)
     fig, ax = plt.subplots()
     sns.violinplot(df, x="Cancel Window Bucket", y="Estimated Booking Value")
     plt.title("Estimated booking value by cancellation window")
@@ -66,8 +69,8 @@ def pps_features(df: pd.DataFrame):
     ax.set_ylabel("Feature")
 
     sns.barplot(data=df,
-            x="ppscore",
-            y="x")
+                x="ppscore",
+                y="x")
     st.pyplot(fig)
 
 
@@ -89,7 +92,7 @@ def hypothesis_bar_plot(df: pd.DataFrame):
     h1_df = hypothesis_1_crosstab(df)
 
     fig, ax = plt.subplots()
-   
+
     h1_df.plot(kind="bar", ax=ax)
     ax.yaxis.set_major_formatter(
         mticker.PercentFormatter(xmax=1, decimals=0))

@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 import json
 
+
 @st.cache_data
 def load_data():
     df = pd.read_csv("outputs/datasets/cleaned/HotelBookingsValid.csv")
@@ -29,7 +30,8 @@ def load_pipeline(pipeline_path):
 @st.cache_data
 def load_evaluation_metrics():
     with open(
-        "outputs/ml_pipeline/cancel_predict/v2/evaluation_metrics.json") as f:
+              "outputs/ml_pipeline/cancel_predict/v2/evaluation_metrics.json"
+              ) as f:
         return json.load(f)
 
 

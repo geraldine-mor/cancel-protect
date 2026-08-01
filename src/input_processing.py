@@ -13,7 +13,9 @@ FEATURE_ORDER = ['hotel', 'lead_time', 'arrival_date_year',
                  'customer_type', 'adr', 'required_car_parking_spaces',
                  'total_of_special_requests']
 
-DROP_COLS = ["arrival_date_year", "arrival_date_week_number", "company", "deposit_type"]
+DROP_COLS = ["arrival_date_year", "arrival_date_week_number",
+             "company", "deposit_type"]
+
 
 # Build input dataframe from inputs
 def build_input_df(raw_inputs: dict) -> pd.DataFrame:
@@ -23,19 +25,22 @@ def build_input_df(raw_inputs: dict) -> pd.DataFrame:
     df["lead_time"] = (raw_inputs["arrival_date"] - date.today()).days
     df['arrival_date_month'] = raw_inputs['arrival_date'].strftime("%B")
     df['arrival_date_day_of_month'] = raw_inputs['arrival_date'].day
-    df['stays_in_week_nights'], df['stays_in_weekend_nights'] = midweek_weekend_nights(
+    df['stays_in_week_nights'],
+    df['stays_in_weekend_nights'] = midweek_weekend_nights(
         raw_inputs['arrival_date'], raw_inputs["los"])
 
     if raw_inputs["waitlist"] == "No":
         df["days_in_waiting_list"] = 0
     elif raw_inputs["waitlist"] == "Yes":
-        df['days_in_waiting_list'] = (date.today() - raw_inputs["waitlist_date"]).days
+        df['days_in_waiting_list'] = (
+            date.today() - raw_inputs["waitlist_date"]).days
     # Change format to match training data
     df["meal"] = meal_code(raw_inputs["meal"])
-    df["reserved_room_type"] = room_code(raw_inputs["hotel"], raw_inputs["reserved_room_type"])
-    
+    df["reserved_room_type"] = room_code(
+        raw_inputs["hotel"], raw_inputs["reserved_room_type"])
+
     if raw_inputs["country"] == "Unknown":
-       df["country"] = np.nan 
+        df["country"] = np.nan
 
     if raw_inputs["is_repeated_guest"] == "No":
         df["is_repeated_guest"] = 0
@@ -45,6 +50,7 @@ def build_input_df(raw_inputs: dict) -> pd.DataFrame:
     df = df.drop(columns=["arrival_date", "los"])
 
     return df[FEATURE_ORDER]
+
 
 # Calculate midweek and weekend nights from arrival date and LOS
 def midweek_weekend_nights(arrival_date: pd.Timestamp, los: int) -> tuple:
