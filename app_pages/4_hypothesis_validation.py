@@ -2,7 +2,7 @@ import streamlit as st
 from src.data_management import load_clean
 from src.data_processing import hypothesis_1_crosstab
 from src.charts import (hypothesis_bar_plot, hypothesis_2_plot,
-                          hypothesis_3_plot)
+                        hypothesis_3_plot)
 
 df = load_clean()
 
@@ -23,7 +23,7 @@ with tab1:
                  "more than deposit secured bookings")
 
     st.error("**Hypothesis Result: Rejected.** The relationship exists, "
-             "but runs opposite to what was proposed.")
+             "but runs *opposite* to what was proposed.")
 
     st.markdown(
         "A Chi-Square test confirmed a statistically significant "
@@ -44,9 +44,9 @@ with tab1:
             "A cancellation rate this extreme suggests Non Refund is unlikely"
             " to reflect genuine guest commitment. It more plausibly reflects "
             "an internal booking or operational process - which is also "
-            "why the feature was excluded from the predictive model (see [Model"
-            " Evaluation page](/model_evaluation#deposit-type-ablation-study)) "
-            "despite its strength as a descriptive signal."
+            "why the feature was excluded from the predictive model (see"
+            " [Model Evaluation page](/model_evaluation))"
+            " despite its strength as a descriptive signal."
         )
 
     with col2:
@@ -63,23 +63,25 @@ with tab1:
         hypothesis_bar_plot(df)
 
 with tab2:
-    st.subheader("Hypothesis 2: Bookings with longer lead times have a " 
+    st.subheader("Hypothesis 2: Bookings with longer lead times have a "
                  "higher cancellation rate than last-minute bookings")
-    
-    st.success("**Hypothesis Result: Accepted.** Longer range bookings " 
+
+    st.success("**Hypothesis Result: Accepted.** Longer range bookings "
                "cancel more than last-minute bookings")
-    
+
     st.markdown(
-        "The point-biserial test confirms this relationship is statistically significant "
-        "(r = 0.29, p < .001) — a small effect by Cohen's convention, though at the upper " 
-        "end of a typical real-world relationship per Gignac and Szodorai (2016)"
+        "The point-biserial test confirms this relationship is statistically"
+        " significant (r = 0.29, p < .001) — a small effect by Cohen's"
+        " convention, though at the upper end of a typical real-world"
+        " relationship per Gignac and Szodorai (2016)"
         )
 
     st.markdown(
-        "In practical terms, lead time alone won't reliably predict which individual "
-        "bookings will cancel, but it remains a useful signal at portfolio level - "
-        "cancellation risk rises consistently the further out a booking is made, "
-        "which is useful for setting overbooking or deposit policy by booking window."
+        "In practical terms, lead time alone won't reliably predict which"
+        " individual bookings will cancel, but it remains a useful signal"
+        " at portfolio level - cancellation risk rises consistently the"
+        " further out a booking is made, which is useful for setting"
+        " overbooking or deposit policy by booking window."
     )
 
     col6, col7, col8 = st.columns([0.2, 0.6, 0.2])
@@ -87,16 +89,18 @@ with tab2:
         hypothesis_2_plot(df)
 
 with tab3:
-    st.subheader("Hypothesis 3: Bookings made through the Online TA market segment have a higher" \
-        " cancellation rate than bookings made through the Direct market segment")
-        
-    st.success("**Hypothesis Result: Accepted.** Online TA bookings have a higher cancelaltion" \
-    "rate than direct bookings")
+    st.subheader("Hypothesis 3: Bookings made through the Online TA market"
+                 " segment have a higher cancellation rate than Direct"
+                 " bookings.")
+
+    st.success("**Hypothesis Result: Accepted.** Online TA bookings have a"
+               " higher cancelaltion rate than direct bookings")
 
     st.markdown(
-        "The Chi-Square test confirms this relationship is statistically significant "
-        "(p < 0.001), though with a small effect size (Cramer's V = 0.18) - a weaker "
-        "individual predictor than deposit type" 
+        "The Chi-Square test confirms this relationship is statistically"
+        " significant (p < 0.001), though with a small effect size "
+        "(Cramer's V = 0.18) - a weaker individual predictor than deposit type"
+        "or lead time"
     )
 
     st.markdown(

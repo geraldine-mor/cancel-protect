@@ -186,6 +186,9 @@ def hypothesis_bar_plot(df: pd.DataFrame):
         mticker.PercentFormatter(xmax=1, decimals=0))
     ax.set_title("Cancellation Rate by Deposit Type")
     plt.xticks(rotation=0)
+    plt.ylabel("Cancellation Rate")
+    plt.xlabel("Deposit Type")
+    plt.legend(["Not Cancelled", "Cancelled"])
     st.pyplot(fig)
 
 
@@ -211,6 +214,9 @@ def hypothesis_2_plot(df: pd.DataFrame):
     ax.yaxis.set_major_formatter(
         mticker.PercentFormatter(xmax=1, decimals=0))
     ax.set_title("Cancellation Rate by Lead Time Band")
+    ax.set_xlabel("Lead Time")
+    ax.set_ylabel("Cancellation Rate")
+    ax.legend(labels=["Not Cancelled", "Cancelled"])
     plt.xticks(rotation=0)
     st.pyplot(fig)
 

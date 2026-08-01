@@ -208,9 +208,11 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Summary answering BR1
 * *Business Requirement: BR1*
 
-### Page 4: Hypothesis and Validation
+### Page 4: Hypothesis Validation
+* Uses tabs for each hypothesis
 * States each hypothesis (H1–H3), validation method used, and final evaluation verdict
 * Statistical test results (chi-square, point-biserial) summarised in plain language for a non-technical stakeholder
+* Includes the most relevant visual for each to back up the summary
 * *Business Requirement: BR1*
 
 ### Page 5: Predict Cancel Model Performance
