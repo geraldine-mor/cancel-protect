@@ -215,13 +215,13 @@ def generate_chart_text(data: dict) -> str:
 
     text_templates = {
         "Market Segment": "the '{top_cat}' segment shows the highest"
-        "cancellation rate at {top_rate:.0%}, compared to '{bottom_cat}'"
+        " cancellation rate at {top_rate:.0%}, compared to '{bottom_cat}'"
         " at {bottom_rate:.0%}.",
         "Customer Type": "'{top_cat}' bookings cancel most frequently "
         "({top_rate:.0%}), while '{bottom_cat}' bookings are the most "
         "reliable ({bottom_rate:.0%}).",
         "Lead Time": "cancellation rate increases with lead time, peaking "
-        "at {top_rate:.0%}for bookings made '{top_cat}' in advance.",
+        "at {top_rate:.0%} for bookings made '{top_cat}' in advance.",
         "Distribution Channel": "the '{top_cat}' channel has the highest "
         "cancellation rate at {top_rate:.0%}.",
         "Arrival Month": "'{top_cat}' sees the highest cancellation rate "
@@ -234,7 +234,7 @@ def generate_chart_text(data: dict) -> str:
         "Deposit Type": "'{top_cat}' deposit bookings show a markedly "
         "higher cancellation rate ({top_rate:.0%}) than '{bottom_cat}'"
         " bookings ({bottom_rate:.0%}). This pattern is examined "
-        "further in the Project Hypotheses page.",
+        "further in the Hypothesis Validation page.",
         "Nationality": " customers from '{top_cat}' cancel the"
         " most at {top_rate:.0%}"
         }

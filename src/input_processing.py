@@ -175,3 +175,8 @@ def room_code(hotel: str, room_type: str) -> str:
         return city_rooms[room_type]
     elif hotel == "Resort Hotel":
         return resort_rooms[room_type]
+
+
+def input_df(data: dict) -> pd.DataFrame:
+    """Convert the inputs into a readable dataframe"""
+    return pd.DataFrame([data])

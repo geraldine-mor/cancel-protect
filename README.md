@@ -183,19 +183,29 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Heuristics: Currently, the reservations team has no systematic method for flagging at-risk bookings and relies on ad-hoc judgement.
 
 ## Dashboard Design
-### Page 1: About CancelProtect
-* Project background, TCS Hotels business context, and summary of the 2 Business Requirements
-* State the 3 project Hypotheses
+### Page 1: Cancel Protect Overview
+* Project background, TCS Hotels business context
+* Expander sections containing the 2 business requirements and the 3 project Hypotheses
 * Navigation guide to the remaining pages
+* Instructions on how to use the app
+* Expander section containing dashboard limitations
+* Link to project README
 * *Business Requirement: BR1, BR2*
 
-### Page 2: CancelProtect
-* **Variable Inputs** — form for a prospective booking's attributes, returning a predicted cancellation probability/flag
+### Page 2: Cancellation Prediction
+* **Variable Inputs** — form for a prospective booking's attributes, returning a cancellation prediction and probability.
+* The inputted fields populate a dataframe displayed to to the user when "Predict" is clicked
+* Model ready inputs are displayed in an expander section
 * *Business Requirement: BR2*
 
-### Page 3: Cancellation Profiling
+### Page 3: Cancellation Study
 * Descriptive analytics and plots addressing cancellation patterns across the 2 properties (hotel type, deposit type, lead time, market segment, etc.)
 * Textual interpretation of each plot, tied back to BR1 conclusions
+* Expander sections for:
+    * Cancellation timing & value
+    * Correlation study and features of interest
+    * Guest behaviour and booking profile
+* Summary answering BR1
 * *Business Requirement: BR1*
 
 ### Page 4: Hypothesis and Validation
