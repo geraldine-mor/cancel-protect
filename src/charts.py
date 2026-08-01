@@ -1,3 +1,11 @@
+"""
+Plotting utilities for the CancelProtect dashboard.
+
+Provides functions for generating Streamlit visualisations, including
+cancellation rate charts, hypothesis testing plots, correlation
+comparisons, model evaluation metrics, and feature importance charts.
+"""
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -13,6 +21,22 @@ from src.data_processing import (
 
 
 def cancellation_charts(data: dict):
+    """
+    Generate and display cancellation rate charts.
+
+    Creates either an overall cancellation rate chart or a grouped
+    cancellation rate chart depending on the selected option in the
+    provided data dictionary.
+
+    Args:
+        data: Dictionary containing the dataset and user selections.
+            Must include a ``choice`` key that determines whether the
+            overall or grouped cancellation rate is displayed.
+
+    Returns:
+        None
+    """
+
     df, column_map = data_prep(data)
 
     if data["choice"] == "Overall":
@@ -47,6 +71,19 @@ def cancellation_charts(data: dict):
 
 
 def cancel_window_rate(hotel: str):
+    """
+    Display booking counts by cancellation window.
+
+    Creates a count plot showing the number of bookings that fall into
+    each cancellation window bucket for the selected hotel.
+
+    Args:
+        hotel: Name of the hotel to analyse.
+
+    Returns:
+        None
+    """
+
     df = create_cancel_profile(hotel)
     fig, ax = plt.subplots()
     sns.countplot(df, x="Cancel Window Bucket", ax=ax)
@@ -55,6 +92,19 @@ def cancel_window_rate(hotel: str):
 
 
 def cancel_value_rate(hotel: str):
+    """
+    Display booking value distribution by cancellation window.
+
+    Creates a violin plot showing the distribution of estimated booking
+    values across different cancellation window buckets.
+
+    Args:
+        hotel: Name of the hotel to analyse.
+
+    Returns:
+        None
+    """
+
     df = create_cancel_profile(hotel)
     fig, ax = plt.subplots()
     sns.violinplot(df, x="Cancel Window Bucket", y="Estimated Booking Value")
@@ -63,6 +113,19 @@ def cancel_value_rate(hotel: str):
 
 
 def pps_features(df: pd.DataFrame):
+    """
+    Display Predictive Power Score (PPS) values for features.
+
+    Calculates the Predictive Power Score for each feature against the
+    target variable and visualises the results as a bar chart.
+
+    Args:
+        df: DataFrame containing the processed hotel booking data.
+
+    Returns:
+        None
+    """
+
     df = pps_predictions(df)
     fig, ax = plt.subplots()
     fig.suptitle("PPS against target")
@@ -75,6 +138,19 @@ def pps_features(df: pd.DataFrame):
 
 
 def correlation_comparison(df: pd.DataFrame):
+    """
+    Compare Pearson and Spearman correlation coefficients.
+
+    Calculates Pearson and Spearman correlations for each feature and
+    displays them side by side in a grouped bar chart.
+
+    Args:
+        df: DataFrame containing the processed hotel booking data.
+
+    Returns:
+        None
+    """
+
     df = correlations(df)
     fig, ax = plt.subplots(figsize=(8, 6))
     fig.suptitle("Pearson vs Spearman Correlations")
@@ -89,6 +165,18 @@ def correlation_comparison(df: pd.DataFrame):
 
 
 def hypothesis_bar_plot(df: pd.DataFrame):
+    """Visualise cancellation rates by deposit type.
+
+    Displays a bar chart used to evaluate the hypothesis that deposit
+    type influences cancellation behaviour.
+
+    Args:
+        df: DataFrame containing the processed hotel booking data.
+
+    Returns:
+        None
+    """
+
     h1_df = hypothesis_1_crosstab(df)
 
     fig, ax = plt.subplots()
@@ -102,6 +190,19 @@ def hypothesis_bar_plot(df: pd.DataFrame):
 
 
 def hypothesis_2_plot(df: pd.DataFrame):
+    """
+    Visualise cancellation rates across lead time bands.
+
+    Displays a bar chart used to evaluate the relationship between lead
+    time and booking cancellations.
+
+    Args:
+        df: DataFrame containing the processed hotel booking data.
+
+    Returns:
+        None
+    """
+
     h2_df = hypothesis_2_crosstab(df)
 
     fig, ax = plt.subplots()
@@ -115,6 +216,20 @@ def hypothesis_2_plot(df: pd.DataFrame):
 
 
 def hypothesis_3_plot(df: pd.DataFrame):
+    """
+    Compare cancellations for Direct and Online TA bookings.
+
+    Creates two visualisations:
+    - A bar chart showing cancellation rates by market segment.
+    - A count plot showing booking totals by cancellation status.
+
+    Args:
+        df: DataFrame containing the processed hotel booking data.
+
+    Returns:
+        None
+    """
+
     h3_df, ota_direct = hypothesis_3_crosstab(df)
 
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 6))
@@ -143,7 +258,24 @@ def hypothesis_3_plot(df: pd.DataFrame):
     st.pyplot(fig)
 
 
-def plot_confusion_matrix(tn, fp, fn, tp, title):
+def plot_confusion_matrix(tn: int, fp: int, fn: int, tp: int, title: str):
+    """
+    Create a confusion matrix heatmap.
+
+    Builds a confusion matrix from the supplied classification counts
+    and returns it as a Matplotlib figure.
+
+    Args:
+        tn: Number of true negatives.
+        fp: Number of false positives.
+        fn: Number of false negatives.
+        tp: Number of true positives.
+        title: Title displayed above the confusion matrix.
+
+    Returns:
+        matplotlib.figure.Figure: The generated confusion matrix figure.
+    """
+
     cm = np.array([[tn, fp], [fn, tp]])
 
     fig, ax = plt.subplots()
@@ -159,6 +291,15 @@ def plot_confusion_matrix(tn, fp, fn, tp, title):
 
 
 def plot_feature_importance():
+    """
+    Display the most important model features.
+
+    Loads the saved feature importance values and displays the top
+    fifteen features in a horizontal bar chart.
+
+    Returns:
+        None
+    """
     df = load_feature_importance()
     fig, ax = plt.subplots(figsize=(8, 6))
     sns.barplot(data=df.head(15), x="Importance", y="Feature", ax=ax)

@@ -1,3 +1,11 @@
+"""
+Data preparation and analysis utilities for the CancelProtect dashboard.
+
+Provides functions for preprocessing data, creating derived features,
+calculating cancellation statistics, generating guest profiles, and
+preparing data for visualisation and model evaluation.
+"""
+
 import numpy as np
 import pandas as pd
 import streamlit as st
@@ -7,6 +15,19 @@ from src.data_management import load_raw, load_clean
 
 @st.cache_data
 def create_cancel_profile(hotel: str) -> pd.DataFrame:
+    """
+    Create a cancellation profile for cancelled bookings.
+
+    Builds derived features describing the timing and value of cancelled
+    bookings, optionally filtering to a specific hotel.
+
+    Args:
+        hotel: Hotel name or ``"Combined"`` to include both hotels.
+
+    Returns:
+        pandas.DataFrame: Cancellation profile containing engineered
+        booking features.
+    """
     df = load_raw()
     df = df[df["is_canceled"] == 1]
     FEATURE_ORDER = ["Hotel", "Arrival Month", "Stay Length", "Lead Time",
@@ -62,6 +83,21 @@ def create_cancel_profile(hotel: str) -> pd.DataFrame:
 
 
 def data_prep(data: dict) -> tuple[pd.DataFrame, dict]:
+    """
+    Prepare booking data for visualisation.
+
+    Cleans, bins, and formats selected features before returning the
+    processed dataset and a mapping between display names and column
+    names.
+
+    Args:
+        data: Dictionary containing the selected hotel and chart option.
+
+    Returns:
+        tuple[pandas.DataFrame, dict]: The processed dataset and column
+        mapping.
+    """
+
     df = load_clean()
 
     month_order = ["January", "February", "March", "April", "May", "June",
@@ -116,6 +152,17 @@ def data_prep(data: dict) -> tuple[pd.DataFrame, dict]:
 
 
 def overall_cancel_rate(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calculate the overall cancellation rate.
+
+    Args:
+        df: Hotel bookings dataset.
+
+    Returns:
+        pandas.DataFrame: Cancellation rates for cancelled and
+        non-cancelled bookings.
+    """
+
     rate_df = (
         df["is_canceled"]
         .value_counts(normalize=True)
@@ -128,6 +175,18 @@ def overall_cancel_rate(df: pd.DataFrame) -> pd.DataFrame:
 
 def grouped_cancel_rate(
         df: pd.DataFrame, data: dict, column_map: dict) -> pd.DataFrame:
+    """
+    Calculate cancellation rates grouped by a selected feature.
+
+    Args:
+        df: Processed bookings dataset.
+        data: User selections including the grouping feature.
+        column_map: Mapping of display names to column names.
+
+    Returns:
+        pandas.DataFrame: Cancellation rate for each group.
+    """
+
     col = column_map[data["choice"]]
     grouped = (
         df.groupby(col, observed=True)["is_canceled"]
@@ -139,6 +198,18 @@ def grouped_cancel_rate(
 
 
 def generate_chart_text(data: dict) -> str:
+    """
+    Generate a narrative summary of cancellation trends.
+
+    Creates descriptive text highlighting overall or grouped
+    cancellation rates for the selected hotel and feature.
+
+    Args:
+        data: Dictionary containing the selected hotel and chart option.
+
+    Returns:
+        str: Summary of the observed cancellation rates.
+    """
     df, col_map = data_prep(data)
     rate_df = overall_cancel_rate(df)
 
@@ -199,10 +270,12 @@ def generate_chart_text(data: dict) -> str:
 
 
 def group_nationality(df: pd.DataFrame) -> pd.Series:
+    """Group guests as domestic or international."""
     return np.where(df["country"] == "PRT", "Domestic (PRT)", "International")
 
 
 def group_lead_time(df: pd.DataFrame) -> pd.Series:
+    """Bin lead time into categorical booking windows."""
     lead_time_bins = [0, 7, 30, 90, df["lead_time"].max() + 1]
     lead_time_labels = ["0-7 days", "8-30 days", "31-90 days", "90+ days"]
     df["lead_time_binned"] = pd.cut(
@@ -214,18 +287,22 @@ def group_lead_time(df: pd.DataFrame) -> pd.Series:
 
 
 def group_repeat_guest(df: pd.DataFrame) -> pd.Series:
+    """Label bookings by repeat guest status."""
     return df["is_repeated_guest"].map({0: "No", 1: "Yes"})
 
 
 def group_prior_cancellations(df: pd.DataFrame) -> pd.Series:
+    """Group guests by previous cancellation history."""
     return np.where(df["previous_cancellations"] > 0, "1+", "0")
 
 
 def group_market_segment(df: pd.DataFrame) -> pd.Series:
+    """Return the booking market segment."""
     return df["market_segment"]
 
 
 def group_additional_needs(df: pd.DataFrame) -> pd.Series:
+    """Group bookings by whether additional guest needs were requested."""
     has_needs = (
         (df["total_of_special_requests"] > 0) | (
             df["required_car_parking_spaces"] > 0))
@@ -233,6 +310,18 @@ def group_additional_needs(df: pd.DataFrame) -> pd.Series:
 
 
 def build_guest_profile(df: pd.DataFrame) -> pd.DataFrame:
+    """Create a guest profile summary table.
+
+    Summarises cancellation rates and booking proportions across
+    selected guest characteristics.
+
+    Args:
+        df: Hotel bookings dataset.
+
+    Returns:
+        pandas.io.formats.style.Styler: Styled summary table.
+    """
+
     fields = {
         "Nationality": group_nationality,
         "Lead Time": group_lead_time,
@@ -267,6 +356,16 @@ def build_guest_profile(df: pd.DataFrame) -> pd.DataFrame:
 
 # Copied from notebook 05_correlation_study
 def pps_predictions(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calculate Predictive Power Scores for each feature.
+
+    Args:
+        df: Hotel bookings dataset.
+
+    Returns:
+        pandas.DataFrame: Features ranked by Predictive Power Score.
+    """
+
     pps_df = df.copy()
 
     pps_df["is_canceled"] = pps_df["is_canceled"].astype("category")
@@ -280,6 +379,16 @@ def pps_predictions(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def correlations(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Compare Pearson and Spearman correlations.
+
+    Args:
+        df: Hotel bookings dataset.
+
+    Returns:
+        pandas.DataFrame: Correlation coefficients in long format.
+    """
+
     numeric_features = ["lead_time", "stays_in_weekend_nights",
                         "stays_in_week_nights", "adults",
                         "children", "babies",
@@ -308,6 +417,17 @@ def correlations(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def hypothesis_1_crosstab(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calculate cancellation rates by deposit type.
+
+    Args:
+        df: Hotel bookings dataset.
+
+    Returns:
+        pandas.DataFrame: Normalised crosstab of deposit type and
+        cancellation stat
+    """
+
     h1_df = pd.crosstab(
         df["deposit_type"], df["is_canceled"], normalize="index")
     h1_df.columns = ["not_canceled", "canceled"]
@@ -316,6 +436,17 @@ def hypothesis_1_crosstab(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def hypothesis_2_crosstab(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Calculate cancellation rates across lead time bands.
+
+    Args:
+        df: Hotel bookings dataset.
+
+    Returns:
+        pandas.DataFrame: Normalised crosstab of lead time band and
+        cancellation status.
+    """
+
     bins = [-np.inf, 7, 30, 90, np.inf]
     lead_time = pd.cut(df["lead_time"],
                        bins, labels=["Last Minute", "Short Range",
@@ -328,7 +459,19 @@ def hypothesis_2_crosstab(df: pd.DataFrame) -> pd.DataFrame:
     return h2_df
 
 
-def hypothesis_3_crosstab(df: pd.DataFrame) -> pd.DataFrame:
+def hypothesis_3_crosstab(
+        df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame]:
+    """
+    Compare Direct and Online TA booking cancellations.
+
+    Args:
+        df: Hotel bookings dataset.
+
+    Returns:
+        tuple[pandas.DataFrame, pandas.DataFrame]: Crosstab of
+        cancellation rates and the filtered dataset.
+    """
+
     features = ["Online TA", "Direct"]
     ota_direct = df[df["market_segment"].isin(features)]
 
@@ -341,6 +484,16 @@ def hypothesis_3_crosstab(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def classification_report_table(data: dict) -> pd.DataFrame:
+    """
+    Format classification report metrics as a table.
+
+    Args:
+        data: Classification report dictionary.
+
+    Returns:
+        pandas.DataFrame: Reformatted classification report.
+    """
+
     data = data.copy()
     accuracy = data.pop("accuracy")
 

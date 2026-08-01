@@ -1,3 +1,12 @@
+"""
+Feature preparation utilities for hotel booking prediction models.
+
+This module contains helper functions for transforming raw user booking
+inputs into a pandas DataFrame formatted for model inference. It performs
+feature engineering, including date-based calculations, categorical encoding,
+and alignment of input features with the model's expected feature order.
+"""
+
 import pandas as pd
 import numpy as np
 from datetime import date
@@ -19,15 +28,32 @@ DROP_COLS = ["arrival_date_year", "arrival_date_week_number",
 
 # Build input dataframe from inputs
 def build_input_df(raw_inputs: dict) -> pd.DataFrame:
+    """
+    Build a model-ready input DataFrame from raw booking inputs.
+
+    This function transforms raw booking information into the feature format
+    expected by the prediction model. It derives date-related features,
+    converts categorical values into training-compatible codes, handles
+    missing values, removes unused input fields, and orders columns according
+    to the model's required feature order.
+
+    Args:
+        raw_inputs (dict): Raw booking information containing fields such as
+            arrival_date, hotel, meal, country, reserved_room_type, length of
+            stay, and guest details.
+
+    Returns:
+        pd.DataFrame: A single-row DataFrame containing engineered features
+        arranged in the order required by the prediction model.
+    """
     df = pd.DataFrame([raw_inputs])
 
     # Derive features
     df["lead_time"] = (raw_inputs["arrival_date"] - date.today()).days
     df['arrival_date_month'] = raw_inputs['arrival_date'].strftime("%B")
     df['arrival_date_day_of_month'] = raw_inputs['arrival_date'].day
-    df['stays_in_week_nights'],
-    df['stays_in_weekend_nights'] = midweek_weekend_nights(
-        raw_inputs['arrival_date'], raw_inputs["los"])
+    df['stays_in_week_nights'], df['stays_in_weekend_nights'] = (
+        midweek_weekend_nights(raw_inputs['arrival_date'], raw_inputs["los"]))
 
     if raw_inputs["waitlist"] == "No":
         df["days_in_waiting_list"] = 0
@@ -53,7 +79,24 @@ def build_input_df(raw_inputs: dict) -> pd.DataFrame:
 
 
 # Calculate midweek and weekend nights from arrival date and LOS
-def midweek_weekend_nights(arrival_date: pd.Timestamp, los: int) -> tuple:
+def midweek_weekend_nights(
+        arrival_date: pd.Timestamp, los: int) -> tuple[int, int]:
+    """
+    Calculate the number of weekday and weekend nights for a stay.
+
+    Iterates through each night of the booking period and counts nights
+    occurring on weekdays versus Saturdays and Sundays.
+
+    Args:
+        arrival_date (pd.Timestamp): Guest arrival date.
+        los (int): Length of stay in nights.
+
+    Returns:
+        tuple: A tuple containing:
+            - midweek_nights (int): Number of weekday nights.
+            - weekend_nights (int): Number of weekend nights.
+    """
+
     weekend_nights = 0
     midweek_nights = 0
     for i in range(los):
@@ -66,7 +109,21 @@ def midweek_weekend_nights(arrival_date: pd.Timestamp, los: int) -> tuple:
 
 
 # Convert meal plan to meal codes
-def meal_code(meal_plan: str):
+def meal_code(meal_plan: str) -> str:
+    """
+    Convert a meal plan description into the corresponding model code.
+
+    Maps human-readable meal plan names to the abbreviated codes used in the
+    training dataset.
+
+    Args:
+        meal_plan (str): Meal plan description provided by the user.
+
+    Returns:
+        str: Encoded meal plan value. Returns "Undefined" if the meal plan is
+        not recognised.
+    """
+
     if meal_plan == "Bed & Breakfast":
         return "BB"
     elif meal_plan == "Half Board":
@@ -80,7 +137,25 @@ def meal_code(meal_plan: str):
 
 
 # Convert reserved room type to letter code
-def room_code(hotel: str, room_type: str):
+def room_code(hotel: str, room_type: str) -> str:
+    """
+    Convert a room type description into the corresponding model code.
+
+    Room type mappings differ between City Hotel and Resort Hotel, so the
+    appropriate mapping dictionary is selected based on the hotel type.
+
+    Args:
+        hotel (str): Hotel category, either City Hotel or Resort Hotel.
+        room_type (str): Human-readable reserved room type.
+
+    Returns:
+        str: Encoded room type letter used by the model.
+
+    Raises:
+        KeyError: If the provided room type does not exist for the specified
+            hotel category.
+    """
+
     resort_rooms = {
         "Standard": "A", "Other Db/Tw": "B",
         "Standard Family": "C", "Superior": "D",
