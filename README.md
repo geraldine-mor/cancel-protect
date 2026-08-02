@@ -183,7 +183,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Heuristics: Currently, the reservations team has no systematic method for flagging at-risk bookings and relies on ad-hoc judgement.
 
 ## Dashboard Design
-### Page 1: Cancel Protect Overview
+### Page 1: ℹ️ Cancel Protect Overview
 * Project background, TCS Hotels business context
 * Expander sections containing the 2 business requirements and the 3 project Hypotheses
 * Navigation guide to the remaining pages
@@ -192,13 +192,13 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Link to project README
 * *Business Requirement: BR1, BR2*
 
-### Page 2: Cancellation Prediction
+### Page 2: ❓ Cancellation Predictor
 * **Variable Inputs** — form for a prospective booking's attributes, returning a cancellation prediction and probability.
 * The inputted fields populate a dataframe displayed to to the user when "Predict" is clicked
 * Model ready inputs are displayed in an expander section
 * *Business Requirement: BR2*
 
-### Page 3: Cancellation Study
+### Page 3: 📊 Cancellation Study
 * Descriptive analytics and plots addressing cancellation patterns across the 2 properties (hotel type, deposit type, lead time, market segment, etc.)
 * Textual interpretation of each plot, tied back to BR1 conclusions
 * Expander sections for:
@@ -208,18 +208,20 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Summary answering BR1
 * *Business Requirement: BR1*
 
-### Page 4: Hypothesis Validation
+### Page 4: ✅ Hypothesis Validation
 * Uses tabs for each hypothesis
 * States each hypothesis (H1–H3), validation method used, and final evaluation verdict
 * Statistical test results (chi-square, point-biserial) summarised in plain language for a non-technical stakeholder
 * Includes the most relevant visual for each to back up the summary
 * *Business Requirement: BR1*
 
-### Page 5: Predict Cancel Model Performance
-* Model type, training data, and features used
-* Confusion matrix and classification report for train and test sets
-* Clear statement of whether the model met its stated performance requirement (80% recall (Cancelled), 85% precision (Not Cancelled))
-* Feature importance discussion
+### Page 5: 🎯 Model Evaluation
+* Clear statements of whether the model met its stated performance requirement (80% recall (Cancelled), 85% precision (Not Cancelled))
+* Main metrics clearly displayed
+* Pipeline steps and final model displayed in expander section
+* Confusion matrix and classification report for train and test sets, pills to toggle between train and test
+* Model selection and tuning sectin in expander section
+* Feature importance discussion in expander session
 * *Business Requirement: BR2*
 
 ## Unfixed Bugs

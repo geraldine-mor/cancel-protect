@@ -507,3 +507,104 @@ def classification_report_table(data: dict) -> pd.DataFrame:
     df = df.reindex(row_order)
 
     return df
+
+
+# Created by chatGPT from a markdown table to avoid line length errors
+def hyperparameter_summary() -> pd.DataFrame:
+    """Return the hyperparameter tuning summary."""
+
+    return pd.DataFrame(
+        [
+            {
+                "Model": "RandomForest",
+                "Hyperparameter": "max_depth",
+                "Purpose": (
+                    "Control the maximum depth of each tree, "
+                    "reduce overfitting"
+                ),
+                "Best Value": 30,
+                "Best Recall": 0.842,
+            },
+            {
+                "Model": "",
+                "Hyperparameter": "n_estimators",
+                "Purpose": (
+                    "Set the number of trees in the forest, "
+                    "improve stability"
+                ),
+                "Best Value": 500,
+                "Best Recall": 0.838,
+            },
+            {
+                "Model": "",
+                "Hyperparameter": "min_samples_leaf",
+                "Purpose": (
+                    "Set the minimum number of samples required "
+                    "at a leaf node, reduce overfitting"
+                ),
+                "Best Value": 2,
+                "Best Recall": 0.841,
+            },
+            {
+                "Model": "XGBoost",
+                "Hyperparameter": "max_depth",
+                "Purpose": (
+                    "Control the depth of each boosted tree, "
+                    "protect against overfitting"
+                ),
+                "Best Value": 7,
+                "Best Recall": 0.862,
+            },
+            {
+                "Model": "",
+                "Hyperparameter": "n_estimators",
+                "Purpose": (
+                    "Set the number of boosting rounds built "
+                    "sequentially, improve fit"
+                ),
+                "Best Value": 200,
+                "Best Recall": 0.861,
+            },
+            {
+                "Model": "",
+                "Hyperparameter": "learning_rate",
+                "Purpose": (
+                    "Scale the contribution of each tree, "
+                    "help with generalisation"
+                ),
+                "Best Value": 0.4,
+                "Best Recall": 0.861,
+            },
+            {
+                "Model": "",
+                "Hyperparameter": "subsample",
+                "Purpose": (
+                    "Set the fraction of training rows sampled "
+                    "for each boosting round, reduce overfitting"
+                ),
+                "Best Value": 0.8,
+                "Best Recall": 0.862,
+            },
+            {
+                "Model": "",
+                "Hyperparameter": "colsample_bytree",
+                "Purpose": (
+                    "Set the fraction of features sampled for "
+                    "each tree, reduce overfitting"
+                ),
+                "Best Value": 0.6,
+                "Best Recall": 0.861,
+            },
+            {
+                "Model": "",
+                "Hyperparameter": "min_child_weight",
+                "Purpose": (
+                    "Set the minimum sum of instance weight "
+                    "required in a child node before splitting, "
+                    "prevent overfitting"
+                ),
+                "Best Value": 3,
+                "Best Recall": 0.863,
+            },
+        ]
+    )
