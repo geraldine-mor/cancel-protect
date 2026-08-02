@@ -136,7 +136,7 @@ results_container.success("""
      as needing to be above 0.85 for the Not Cancelled class for the model
      to be considered successful.
 
-    Precision for the Not Cancelled class is 0.92, this condidtion is also
+    Precision for the Not Cancelled class is 0.92, this condition is also
      met 
     """)
 
@@ -206,7 +206,7 @@ with st.expander(label="Model Selection and Tuning"):
     st.success("The tuning options were retested via the same 5-fold cross"
                " validation grid search method and the top performing model"
                " was **XGBClassifier** with `scale_pos_weight=<neg_count/pos_"
-               "count>`, `learning_rate=0.2`, `max_depth=8` `and min_child_"
+               "count>`, `learning_rate=0.2`, `max_depth=8` and `min_child_"
                "weight=3` producing a mean recall of 0.864")
 
 with st.expander(label="Feature Importance"):

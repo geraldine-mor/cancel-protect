@@ -82,6 +82,7 @@ def create_cancel_profile(hotel: str) -> pd.DataFrame:
         return cancel_df[FEATURE_ORDER]
 
 
+@st.cache_data
 def data_prep(data: dict) -> tuple[pd.DataFrame, dict]:
     """
     Prepare booking data for visualisation.
@@ -197,6 +198,7 @@ def grouped_cancel_rate(
     return grouped
 
 
+@st.cache_data
 def generate_chart_text(data: dict) -> str:
     """
     Generate a narrative summary of cancellation trends.
@@ -355,6 +357,7 @@ def build_guest_profile(df: pd.DataFrame) -> pd.DataFrame:
 
 
 # Copied from notebook 05_correlation_study
+@st.cache_data
 def pps_predictions(df: pd.DataFrame) -> pd.DataFrame:
     """
     Calculate Predictive Power Scores for each feature.
@@ -378,6 +381,7 @@ def pps_predictions(df: pd.DataFrame) -> pd.DataFrame:
     return pps_plot_df
 
 
+@st.cache_data
 def correlations(df: pd.DataFrame) -> pd.DataFrame:
     """
     Compare Pearson and Spearman correlations.
