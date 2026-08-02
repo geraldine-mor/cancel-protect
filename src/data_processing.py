@@ -152,6 +152,7 @@ def data_prep(data: dict) -> tuple[pd.DataFrame, dict]:
     return df, column_map
 
 
+@st.cache_data
 def overall_cancel_rate(df: pd.DataFrame) -> pd.DataFrame:
     """
     Calculate the overall cancellation rate.
@@ -174,6 +175,7 @@ def overall_cancel_rate(df: pd.DataFrame) -> pd.DataFrame:
     return rate_df
 
 
+@st.cache_data
 def grouped_cancel_rate(
         df: pd.DataFrame, data: dict, column_map: dict) -> pd.DataFrame:
     """
