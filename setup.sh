@@ -1,14 +1,13 @@
-mkdir -p ~/.streamlit
+mkdir -p ~/.streamlit/
 
-echo "SETUP RAN" >&2
-
-cat > ~/.streamlit/config.toml <<EOF
+echo "[theme]
+primaryColor = '#1B4F8C'
+backgroundColor = '#F5F7FA'
+secondaryBackgroundColor = '#DCE3EC'
+textColor = '#14213D'
+font = 'sans serif'
 [server]
 headless = true
 port = $PORT
-address = "0.0.0.0"
 enableCORS = false
-EOF
-
-echo "CONFIG CREATED" >&2
-cat ~/.streamlit/config.toml >&2
+" > ~/.streamlit/config.toml
