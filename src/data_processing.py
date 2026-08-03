@@ -83,7 +83,7 @@ def create_cancel_profile(hotel: str) -> pd.DataFrame:
 
 
 @st.cache_data
-def data_prep(data: dict) -> tuple[pd.DataFrame, dict]:
+def data_prep(hotel: str) -> tuple[pd.DataFrame, dict]:
     """
     Prepare booking data for visualisation.
 
@@ -107,8 +107,8 @@ def data_prep(data: dict) -> tuple[pd.DataFrame, dict]:
     df["arrival_date_month"] = pd.Categorical(
         df["arrival_date_month"], categories=month_order, ordered=True)
 
-    if data["hotel"] != "Combined":
-        df = df[df["hotel"] == data["hotel"]]
+    if hotel != "Combined":
+        df = df[df["hotel"] == hotel]
 
     lead_time_bins = [0, 7, 30, 90, df["lead_time"].max() + 1]
     lead_time_labels = ["0-7 days", "8-30 days", "31-90 days", "90+ days"]
@@ -152,7 +152,6 @@ def data_prep(data: dict) -> tuple[pd.DataFrame, dict]:
     return df, column_map
 
 
-@st.cache_data
 def overall_cancel_rate(df: pd.DataFrame) -> pd.DataFrame:
     """
     Calculate the overall cancellation rate.
@@ -175,9 +174,8 @@ def overall_cancel_rate(df: pd.DataFrame) -> pd.DataFrame:
     return rate_df
 
 
-@st.cache_data
 def grouped_cancel_rate(
-        df: pd.DataFrame, data: dict, column_map: dict) -> pd.DataFrame:
+        df: pd.DataFrame, choice: str, column_map: dict) -> pd.DataFrame:
     """
     Calculate cancellation rates grouped by a selected feature.
 
@@ -190,18 +188,17 @@ def grouped_cancel_rate(
         pandas.DataFrame: Cancellation rate for each group.
     """
 
-    col = column_map[data["choice"]]
+    col = column_map[choice]
     grouped = (
         df.groupby(col, observed=True)["is_canceled"]
         .mean()
         .reset_index()
     )
-    grouped.columns = [data["choice"], "Cancellation Rate"]
+    grouped.columns = [choice, "Cancellation Rate"]
     return grouped
 
 
-@st.cache_data
-def generate_chart_text(data: dict) -> str:
+def generate_chart_text(hotel: str, choice:str) -> str:
     """
     Generate a narrative summary of cancellation trends.
 
@@ -214,7 +211,7 @@ def generate_chart_text(data: dict) -> str:
     Returns:
         str: Summary of the observed cancellation rates.
     """
-    df, col_map = data_prep(data)
+    df, col_map = data_prep(hotel)
     rate_df = overall_cancel_rate(df)
 
     text_templates = {
@@ -242,29 +239,29 @@ def generate_chart_text(data: dict) -> str:
         "Nationality": " customers from '{top_cat}' cancel the"
         " most at {top_rate:.0%}"
         }
-    if data["hotel"] == "Combined":
+    if hotel == "Combined":
         hotel_phrase = "Across both hotels, "
     else:
-        hotel_phrase = f"At the {data["hotel"]}, "
+        hotel_phrase = f"At the {hotel}, "
 
     rate = rate_df.loc[
         rate_df["Status"] == "Cancelled", "Cancellation Rate"].iloc[0]
-    if data["choice"] == "Overall":
+    if choice == "Overall":
         return (
             f"{hotel_phrase} the overall cancellation rate is {rate:.0%}")
     else:
-        grouped_df = grouped_cancel_rate(df, data, col_map)
+        grouped_df = grouped_cancel_rate(df, choice, col_map)
         sorted_df = grouped_df.sort_values(
             "Cancellation Rate", ascending=False)
         top_cat, top_rate = (
-            sorted_df.iloc[0][data["choice"]],
+            sorted_df.iloc[0][choice],
             sorted_df.iloc[0]["Cancellation Rate"])
         bottom_cat, bottom_rate = (
-            sorted_df.iloc[-1][data["choice"]],
+            sorted_df.iloc[-1][choice],
             sorted_df.iloc[-1]["Cancellation Rate"])
 
         template = text_templates.get(
-            data["choice"], f"Cancellation rate varies by {data["choice"]}")
+            choice, f"Cancellation rate varies by {choice}")
         body = template.format(
             rate=rate, top_cat=top_cat,
             top_rate=top_rate, bottom_cat=bottom_cat, bottom_rate=bottom_rate

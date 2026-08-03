@@ -12,18 +12,21 @@ import json
 
 
 @st.cache_data
-def load_data():
+def load_dropdown_options():
     """
-    Load the validated dataset.
+    Load the unique country and agent values used to populate
+    dashboard input dropdowns.
 
     Returns:
-        pandas.DataFrame: The validated dataset.
+        pandas.DataFrame: Unique, non-null country and agent values.
     """
-    df = pd.read_csv("outputs/datasets/cleaned/HotelBookingsValid.csv")
-    return df
+    df = pd.read_csv(
+        "outputs/datasets/cleaned/HotelBookingsValid.csv",
+        usecols=["country", "agent"]
+    )
+    return df.dropna()
 
 
-@st.cache_data
 def load_raw():
     """
     Load the raw hotel bookings dataset.

@@ -20,7 +20,7 @@ from src.data_processing import (
     hypothesis_2_crosstab, hypothesis_3_crosstab)
 
 
-def cancellation_charts(data: dict):
+def cancellation_charts(hotel: str, choice:str):
     """
     Generate and display cancellation rate charts.
 
@@ -37,9 +37,9 @@ def cancellation_charts(data: dict):
         None
     """
 
-    df, column_map = data_prep(data)
+    df, column_map = data_prep(hotel)
 
-    if data["choice"] == "Overall":
+    if choice == "Overall":
         rate_df = overall_cancel_rate(df)
 
         fig, ax = plt.subplots(figsize=(12, 8))
@@ -54,16 +54,16 @@ def cancellation_charts(data: dict):
         st.pyplot(fig)
         plt.close(fig)
 
-    elif data["choice"] != "Overall":
-        grouped = grouped_cancel_rate(df, data, column_map)
+    elif choice!= "Overall":
+        grouped = grouped_cancel_rate(df, choice, column_map)
 
         fig, ax = plt.subplots(figsize=(12, 8))
         sns.barplot(
-            data=grouped, x=data["choice"], y="Cancellation Rate", ax=ax)
+            data=grouped, x=choice, y="Cancellation Rate", ax=ax)
         ax.bar_label(
             ax.containers[0],
             labels=[f"{v:.0%}" for v in grouped["Cancellation Rate"]])
-        plt.title(f"Cancellation Rate by {data["choice"]}")
+        plt.title(f"Cancellation Rate by {choice}")
         ax.yaxis.set_major_formatter(
             mticker.PercentFormatter(xmax=1, decimals=0))
         st.pyplot(fig)

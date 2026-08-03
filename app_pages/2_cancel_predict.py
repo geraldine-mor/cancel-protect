@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from src.data_management import load_data
+from src.data_management import load_dropdown_options
 from src.input_processing import build_input_df, input_df
 from src.model import predict_cancellation
 
@@ -23,7 +23,7 @@ col13, col14, col15, col16 = st.columns(4)
 col17, col18, col19, col20 = st.columns(4)
 col21, col22, col23 = st.columns(3)
 
-df = load_data()
+df = load_dropdown_options()
 
 with col1:
     hotel = st.radio("Hotel", ["Resort Hotel", "City Hotel"])
@@ -52,7 +52,7 @@ with col8:
 
 with col9:
     values = pd.concat([pd.Series(["Unknown"]),
-                        pd.Series(df["country"].dropna().unique())])
+                        pd.Series(df["country"].unique())])
     country = st.selectbox("Country (if known)", options=values)
 
 with col10:
@@ -89,7 +89,7 @@ with col14:
 with col17:
     agency = st.radio("Is this an agency booking?", ["No", "Yes"])
     if agency == "Yes":
-        agent_ids = pd.Series(df["agent"].dropna().unique()).sort_values()
+        agent_ids = pd.Series(df["agent"].unique()).sort_values()
         agent = st.selectbox("Agent ID", options=agent_ids)
     else:
         agent = np.nan
