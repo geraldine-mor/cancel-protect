@@ -284,10 +284,8 @@ A kanban board was utilised via [GitHub Projects](https://github.com/users/geral
 Bugs encountered were recorded in [GitHub Issues](https://github.com/geraldine-mor/cancel-protect/issues?q=label%3A%22bug%22)
 
 ## Difference between local and deployed version
-There is a difference in latency between the deployed version and the local version. Extensive efforts were made to improve latency of the deployed version (cancellation study page) but the problem persists. It appears to be due to the eco dyno tier limitations and I am hopeful that the issue would not be present on a paid tier.
+This application is deployed on Heroku's Eco dyno tier, which provides shared, non-dedicated CPU resources. As a result, some pages — particularly the Cancellation Study page, which performs multiple statistical computations (PPS scoring, correlation analysis, guest profiling) — may exhibit noticeable latency during use. This has been mitigated as far as possible through function-level caching (st.cache_data) to avoid redundant recomputation; the residual delay reflects the hosting tier's CPU allocation rather than inefficiency in the underlying data pipeline.
 
-
-⚠️ Deploy again to fix results formatting error ⚠️
 ## Deployment
 ### Heroku
 
