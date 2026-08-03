@@ -54,7 +54,8 @@ with col2:
         cancellation_charts(selection["hotel"], selection["choice"])
 
 text_container = main_container.container(border=True)
-text_container.write(generate_chart_text(selection["hotel"], selection["choice"]))
+text_container.write(generate_chart_text(selection["hotel"],
+                                         selection["choice"]))
 
 with st.expander(label="Cancellation Timing & Value"):
     col1, col2 = st.columns(spec=2, gap="medium")

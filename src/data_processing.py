@@ -198,7 +198,7 @@ def grouped_cancel_rate(
     return grouped
 
 
-def generate_chart_text(hotel: str, choice:str) -> str:
+def generate_chart_text(hotel: str, choice: str) -> str:
     """
     Generate a narrative summary of cancellation trends.
 
