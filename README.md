@@ -9,7 +9,7 @@ Developer: Geraldine Morey ([geraldine-mor](https://www.github.com/geraldine-mor
 
 # Link to live site: [CancelProtect](https://cancel-protect-03ac919826b5.herokuapp.com/)
 
-⚠️ ## How to use this repo ⚠️
+## How to use this repo
 1. Fork this repo
 2. In your newly created repo click on the green Code button. 
 3. Then, from the Codespaces tab, click Create codespace on main.
@@ -18,7 +18,7 @@ Developer: Geraldine Morey ([geraldine-mor](https://www.github.com/geraldine-mor
 6. Open the jupyter_notebooks directory, and click on the notebook you want to open.
 7. Click the kernel button and choose Python Environments.
 
-⚠️ Note that the kernel says Python 3.12.8 as it inherits from the workspace, so it will be Python-3.12.8 as installed by Codespaces. To confirm this, you can use `! python --version` in a notebook code cell. ⚠️
+Note that the kernel says Python 3.12.1 as it inherits from the workspace, so it will be Python-3.12.1 as installed by Codespaces. To confirm this, you can use `! python --version` in a notebook code cell.
 
 ## Cloud IDE Reminders
 
@@ -85,14 +85,13 @@ The dataset comprises 119,390 rows and 32 columns. Each row represents a hotel b
 
 * A customer or guest is the person who will stay at the hotel
 * Hotel or property refers to either of the 2 hotels in the dataset
-* LOS is length of stay
+* LOS is length of stay in number of nights
 * OTA is online travel agent
 * TA is travel agent, TO is tour operator
 * Agent refers to someone who makes the booking on behalf of the guest
-* Company refers to a corporate account that books on behalf of their employees or VIPs
+* Company refers to a corporate account with which the booking is associated
 * ADR is average daily rate
 * Reservation or booking refers to the agreement between guest and property and is also one row of the dataset.
-
 
 ## Business Requirements
 The revenue manager at TCS hotels has requested actionable insights and data-driven recommendations to help reduce cancellations and inform hotel policy making decisions.
@@ -104,19 +103,19 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 ## Hypotheses 
 ### H1: No deposit bookings cancel more than deposit-secured bookings.
 * **Validation:** Chi-Square test on `deposit_type` vs `is_canceled`
-* **Visualisation:** Grouped bar chart of cancellation rate by deposit type
+* **Visualisation:** Grouped bar chart of cancellation rate by deposit status
 * **Expected Outcome:** Confirmed - no financial commitment reduces cancellation friction
 * **Evaluation Result:** Rejected - more than 99% of Non Refund bookings cancel
 
 ### H2: Bookings with longer lead times have a higher cancellation rate than last-minute bookings.
 * **Validation:** Point-biserial correlation between `lead_time` and `is_canceled`
-* **Visualisation:** Violin plot of lead time distribution by cancellation status; histogram with KDE overlay
+* **Visualisation:** Grouped bar chart of cancellation rate by lead time band
 * **Expected outcome:** Confirmed - longer lead times provide more opportunity for plans to change or to source alternative accommodation
 * **Evaluation Result:** Accepted - cancellation rate rises steadily with booking lead time
 
 ### H3: Bookings made through the Online TA market segment have a higher cancellation rate than Direct bookings.
 * **Validation:** Chi-square test on `market_segment` vs `is_canceled`
-* **Visualisation:** Grouped bar chart of cancellation rate by segment
+* **Visualisation:** Grouped bar chart of cancellation rate by relevant segments
 * **Expected Outcome:** Confirmed - OTAs act as an intermediary and reduce customer loyalty and cancellation friction
 * **Evaluation Result:** Accepted - Online TAs have a higher cancellation rate than direct bookings
 
@@ -164,10 +163,10 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 | As a Revenue Manager | I want clear confirmation of whether the predictive model meets its stated performance targets | so that I know how much confidence to place in their outputs | 4 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) |
 | As a data practitioner | I want the app deployable via Heroku-standard config files | so that TCS Hotels' stakeholders can access the dashboard without a local setup | 5 | ![Must Have](https://img.shields.io/badge/Must_Have-ff0000) | 
 
-⚠️ ![Must Have](https://img.shields.io/badge/Must_Have-ff0000)
-![Should Have](https://img.shields.io/badge/Should_Have-ff8c00) 
-![Could Have](https://img.shields.io/badge/Could_Have-1d76db)
-![Won't Have](https://img.shields.io/badge/Won't_Have-6e6e6e) ⚠️
+### Future Features
+* Add an unsupervised learning model to assess clusters and develop a clearer understanding of market segmentation
+* Add a regression model to predict the cancellation window of a booking predicted to cancel to better inform overbooking policy
+* Include synthesised mock 'live' data to allow the dashboard to demonstrate individual reservation lookup and generate a risk report of upcoming likely cancellations
 
 ## ML Business Case
 ### Predict cancellation
@@ -191,12 +190,14 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Expander section containing dashboard limitations
 * Link to project README
 * *Business Requirement: BR1, BR2*
+![screenshot of overview page](documentation/pages/cancel_protect_overview.png)
 
 ### Page 2: ❓ Cancellation Predictor
 * **Variable Inputs** — form for a prospective booking's attributes, returning a cancellation prediction and probability.
 * The inputted fields populate a dataframe displayed to to the user when "Predict" is clicked
 * Model ready inputs are displayed in an expander section
 * *Business Requirement: BR2*
+![screenshot of cancellation predictor page](documentation/pages/cancellation_predictor.png)
 
 ### Page 3: 📊 Cancellation Study
 * Descriptive analytics and plots addressing cancellation patterns across the 2 properties (hotel type, deposit type, lead time, market segment, etc.)
@@ -207,6 +208,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
     * Guest behaviour and booking profile
 * Summary answering BR1
 * *Business Requirement: BR1*
+![screenshot of cancellation study page](documentation/pages/cancellation_study.png)
 
 ### Page 4: ✅ Hypothesis Validation
 * Uses tabs for each hypothesis
@@ -214,6 +216,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Statistical test results (chi-square, point-biserial) summarised in plain language for a non-technical stakeholder
 * Includes the most relevant visual for each to back up the summary
 * *Business Requirement: BR1*
+![screenshot of hyposthesis validation page](documentation/pages/hypothesis_validation.png)
 
 ### Page 5: 🎯 Model Evaluation
 * Clear statements of whether the model met its stated performance requirement (80% recall (Cancelled), 85% precision (Not Cancelled))
@@ -223,6 +226,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * Model selection and tuning sectin in expander section
 * Feature importance discussion in expander session
 * *Business Requirement: BR2*
+![screenshot of model evaluation page](documentation/pages/model_evaluation.png)
 
 ## Validation and Testing
 All python pages were validated using the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com/)
@@ -240,18 +244,55 @@ All python pages were validated using the recommended [PEP8 CI Python Linter](ht
 | src | [data_processing](https://github.com/geraldine-mor/cancel-protect/blob/main/src/data_processing.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/src/data_processing.py) | ![screenshot of validation result](documentation/validation/data_processing_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/a133c5748d333dd7a3ea9638c97b2b9dc4fc9a32) |
 | src | [input_processing](https://github.com/geraldine-mor/cancel-protect/blob/main/src/input_processing.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/src/input_processing.py) | ![screenshot of validation result](documentation/validation/input_processing_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/a133c5748d333dd7a3ea9638c97b2b9dc4fc9a32) |
 | src | [model](https://github.com/geraldine-mor/cancel-protect/blob/main/src/model.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/src/model.py) | ![screenshot of validation result](documentation/validation/model_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/a133c5748d333dd7a3ea9638c97b2b9dc4fc9a32) |
-|  | [app](https://github.com/geraldine-mor/cancel-protect/blob/main/app.py) | [PEP 8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/app.py) | ![screenshot of validation result](documentation/validation/app_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/a133c5748d333dd7a3ea9638c97b2b9dc4fc9a32) |
+|  | [app](https://github.com/geraldine-mor/cancel-protect/blob/main/app.py) | [PEP 8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/app.py) | ![screenshot of validation result](documentation/validation/app_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/6db4946a6e93e7cbc7a989b404abeab95b8e4975) |
+
+### Testing
+Manual testing was carried out on the deplyed app on all the main features:
+
+| Feature | Test Performed | Result | Screenshot |
+| --- | --- | --- | --- |
+| Page Navigation | Clicked through all options | Correct page displayed each time | ![screenshot of navigation](documentation/testing/navigation.png) |
+| Expander Sections | Clicked each expander section | Sections expanded as expected | ![screenshot of expander sections](documentation/testing/expanders.png) |
+| Conditional Form Fields | Clicked each conditional form field | Additional fields appeared as expected | ![screenshot of conditional form fields](documentation/testing/conditional_form_fields.png) |
+| Prediction Form | Completed the form to generate a not cancel result | Not cancel prediction and probability displayed as expected | ![Screenshot of not cancel prediction](documentation/testing/not_cancel.png) |
+|  | Completed the form to generate a will cancel result | Will cancel prediction and probability displayed as expected | ![screenshot of cancel prediction](documentation/testing/cancel_result.png) |
+| Input Dataframes | Completed the prediction form to view generated dataframes | Input dataframe displayed, model-ready dataframe displayed in expander section as expected | ![screenshot of input dataframes](documentation/testing/dataframe_construction.png) |
+| Cancellation Study Chart Selection | Selected all combinations of cancellation rate charts | Correct chart displayed as expected | ![screenshot of chart selection](documentation/testing/chart_selection.png) |
+| Cancellation Study Pill Selection | Clicked each of the 3 pills to check that the correct information is displayed | The correct information displayed as expected for each corresponding pill | ![screenshot of pill selsection](documentation/testing/pill_selection.png) |
+| Hypthesis Page Tab Selection | Clicked each of the 3 tabs | The correct hypothesis analysis displayed for each corresponding tab | ![screenshot of tab selection](documentation/testing/tab_selection.png) |
+| Model Page Pill Selection | Clicked each of the train and test set pills | The correct confusion matrix and classificatin report displayed as expected | ![screenshot of model page pill selection](documentation/testing/pill_selection_model_page.png) |
+
+All Jupyter Notebooks were rerun:
+
+| Notebook | Screenshot | Notes |
+| --- | --- | --- |
+| [01_data_collection](/jupyter_notebooks/01_data_collection.ipynb) | ![screenshot of data collection notebook](documentation/notebooks/data_collection.png) | Kaggle import not retested due to removal of credentials |
+| [02_cancellation_eda](/jupyter_notebooks/02_cancellation_eda.ipynb) | ![screenshot of cancellation eda notebook](documentation/notebooks/cancellation_eda.png) |  |
+| [03_rm_analysis](/jupyter_notebooks/03_rm_analysis.ipynb) | ![screenshot of rm analysis notebook](documentation/notebooks/rm_analysis.png) |  |
+| [04_cleaning](/jupyter_notebooks/04_cleaning.ipynb) | ![screenshot of cleaning notebook](documentation/notebooks/cleaning.png) |  |
+| [05_correlation_study](/jupyter_notebooks/05_correlation_study.ipynb) | ![screenshot of correlation study notebook](documentation/notebooks/correlation_study.png) | 
+| [06_feature_exploration](/jupyter_notebooks/06_feature_exploration.ipynb) | ![screenshot of feature exploration notebook](documentation/notebooks/feature_exploration.png) |  |
+| [07_feature_engineering](/jupyter_notebooks/07_feature_engineering.ipynb) | ![screenshot of feature engineering notebook](documentation/notebooks/feature_engineering.png) |  |
+| [08_predictive_modelling](/jupyter_notebooks/08_predictive_modelling.ipynb) | ![screenshot of predictive modelling notebook](documentation/notebooks/predictive_modelling.png) | The grid cv search with all parameter options for XGBClassifier took 31 mins to run. This cell was not retested ![screenshot of grid cv search](documentation/notebooks/cv_grid_final_model.png) |
+| [09_predictive_model_evaluation](/jupyter_notebooks/09_predictive_model_evaluation.ipynb) | ![screenshot of predictive model evaluation notebook](documentation/notebooks/predictive_model_evaluation.png) |
+
+## Agile Development
+A kanban board was utilised via [GitHub Projects](https://github.com/users/geraldine-mor/projects/9/views/1) to manage the project.
+![screenshot of kanban board](/documentation/project_board.png)
+
+## Bugs
+Bugs encountered were recorded in [GitHub Issues](https://github.com/geraldine-mor/cancel-protect/issues?q=label%3A%22bug%22)
+
+## Difference between local and deployed version
+There is a difference in latency between the deployed version and the local version. Extensive efforts were made to improve latency of the deployed version (cancellation study page) but the problem persists. It appears to be due to the eco dyno tier limitations and I am hopeful that the issue would not be present on a paid tier.
 
 
-
-## Unfixed Bugs
-* You will need to mention unfixed bugs and why they were not fixed. This section should include shortcomings of the frameworks or technologies used. Although time can be a significant variable to consider, paucity of time and difficulty understanding implementation is not a valid reason to leave bugs unfixed.
-
+⚠️ Deploy again to fix results formatting error ⚠️
 ## Deployment
 ### Heroku
 
-* The App live link is: https://YOUR_APP_NAME.herokuapp.com/ 
-* Set the runtime.txt Python version to a [Heroku-24](https://devcenter.heroku.com/articles/python-support#supported-runtimes) stack currently supported version.
+* The App live link is: https://cancel-protect-03ac919826b5.herokuapp.com/cancellation_study 
+* Set the .python-version to 3.12
 * The project was deployed to Heroku using the following steps.
 
 1. Log in to Heroku and create an App
@@ -261,10 +302,8 @@ All python pages were validated using the recommended [PEP8 CI Python Linter](ht
 5. The deployment process should happen smoothly if all deployment files are fully functional. Click now the button Open App on the top of the page to access your App.
 6. If the slug size is too large then add large files not required for the app to the .slugignore file.
 
-
 ## Main Data Analysis and Machine Learning Libraries
 * Here you should list the libraries you used in the project and provide an example(s) of how you used these libraries.
-
 
 ## Credits 
 

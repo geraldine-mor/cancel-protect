@@ -20,7 +20,7 @@ from src.data_processing import (
     hypothesis_2_crosstab, hypothesis_3_crosstab)
 
 
-def cancellation_charts(hotel: str, choice:str):
+def cancellation_charts(hotel: str, choice: str):
     """
     Generate and display cancellation rate charts.
 
@@ -54,7 +54,7 @@ def cancellation_charts(hotel: str, choice:str):
         st.pyplot(fig)
         plt.close(fig)
 
-    elif choice!= "Overall":
+    elif choice != "Overall":
         grouped = grouped_cancel_rate(df, choice, column_map)
 
         fig, ax = plt.subplots(figsize=(12, 8))
@@ -184,10 +184,10 @@ def hypothesis_bar_plot(df: pd.DataFrame):
     h1_df.plot(kind="bar", ax=ax)
     ax.yaxis.set_major_formatter(
         mticker.PercentFormatter(xmax=1, decimals=0))
-    ax.set_title("Cancellation Rate by Deposit Type")
+    ax.set_title("Cancellation Rate by Deposit Statua")
     plt.xticks(rotation=0)
     plt.ylabel("Cancellation Rate")
-    plt.xlabel("Deposit Type")
+    plt.xlabel("Deposit Status")
     plt.legend(["Not Cancelled", "Cancelled"])
     st.pyplot(fig)
 

@@ -153,7 +153,7 @@ if predict:
                     f" probability of cancellation is: {probability:.1%}]")
     elif prediction == 0:
         st.markdown(f":green-badge[This booking is not expeted to cancel, "
-                    "it has a {probability:.1%} chance of cancellation]")
+                    f"it has a {probability:.1%} chance of cancellation]")
 
     st.dataframe(input_df(inputs))
 

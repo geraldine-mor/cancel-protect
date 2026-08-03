@@ -436,18 +436,26 @@ def correlations(df: pd.DataFrame) -> pd.DataFrame:
 
 def hypothesis_1_crosstab(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Calculate cancellation rates by deposit type.
+    Calculate cancellation rates by grouped deposit status.
 
     Args:
         df: Hotel bookings dataset.
 
     Returns:
-        pandas.DataFrame: Normalised crosstab of deposit type and
-        cancellation stat
+        pandas.DataFrame: Normalised crosstab of deposit status
+        and cancellation rate
     """
 
-    h1_df = pd.crosstab(
-        df["deposit_type"], df["is_canceled"], normalize="index")
+    h1_df = df.copy()
+    h1_df["deposit_group"] = h1_df["deposit_type"].map({
+        "No Deposit": "No Deposit",
+        "Non Refund": "Deposit Secured",
+        "Refundable": "Deposit Secured"
+    })
+
+    h1_df = pd.crosstab(h1_df["deposit_group"],
+                        h1_df["is_canceled"],
+                        normalize="index")
     h1_df.columns = ["not_canceled", "canceled"]
 
     return h1_df
