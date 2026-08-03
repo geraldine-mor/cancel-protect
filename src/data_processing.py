@@ -310,6 +310,7 @@ def group_additional_needs(df: pd.DataFrame) -> pd.Series:
     return np.where(has_needs, "Yes", "No")
 
 
+@st.cache_data
 def build_guest_profile(df: pd.DataFrame) -> pd.DataFrame:
     """Create a guest profile summary table.
 
@@ -320,7 +321,7 @@ def build_guest_profile(df: pd.DataFrame) -> pd.DataFrame:
         df: Hotel bookings dataset.
 
     Returns:
-        pandas.io.formats.style.Styler: Styled summary table.
+        pandas.DataFrame: summary table
     """
 
     fields = {
@@ -346,13 +347,27 @@ def build_guest_profile(df: pd.DataFrame) -> pd.DataFrame:
         rows.append(summary)
 
     guest_profile = pd.concat(
-        rows, ignore_index=True).style.background_gradient(cmap="Blues")
-    guest_profile = guest_profile.format({
+        rows, ignore_index=True)
+
+    return guest_profile
+
+
+def style_guest_profile(guest_profile: pd.DataFrame) -> pd.DataFrame:
+    """
+    Adds styling to the guest_profile dataframe
+
+    Args:
+        guest_profile: Guest profile dataset
+
+    Returns:
+        pandas.io.formats.style.Styler: Styled summary table.
+    """
+    styled = guest_profile.style.background_gradient(cmap="Blues").format({
         "Cancellation Rate": "{:.0%}",
         "% of Total Bookings": "{:.0%}"
     })
 
-    return guest_profile
+    return styled
 
 
 # Copied from notebook 05_correlation_study

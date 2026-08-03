@@ -1,7 +1,7 @@
 import streamlit as st
 from src.data_management import load_clean
 from src.data_processing import (create_cancel_profile, generate_chart_text,
-                                 build_guest_profile)
+                                 build_guest_profile, style_guest_profile)
 from src.charts import (cancellation_charts, cancel_window_rate,
                         cancel_value_rate, pps_features,
                         correlation_comparison)
@@ -126,7 +126,7 @@ with st.expander(label="Guest Behaviour and Booking Profile"):
     container.write("This summary reflects both properties combined, drawing"
                     " together the risk factors explored throughout this page"
                     " into a single guest profile")
-    container.table(guest_profile)
+    container.table(style_guest_profile(guest_profile))
     container.write("""
     The table breaks the guest profile down into individual risk factors,
     several of which are explored in more depth in the summary below.
