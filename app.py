@@ -13,7 +13,7 @@ pg = st.navigation([
             title="Hypothesis Validation", icon="✅"),
     st.Page("app_pages/5_model_evaluation.py",
             title="Model Evaluation", icon="🎯"),
-    st.Page("app_pages/project_conclusion.py",
+    st.Page("app_pages/6_project_conclusion.py",
             title="Project Conclusion", icon="🏢")
 ])
 
