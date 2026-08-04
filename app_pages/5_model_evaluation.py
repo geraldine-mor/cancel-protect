@@ -86,7 +86,7 @@ with st.expander(label="Prediction Pipeline"):
                         " columns the model can use"
                         ]
         })
-    st.table(pipeline_steps_explained, width="content")
+    st.table(pipeline_steps_explained, width="stretch")
     st.markdown("### Model:")
     st.code(model, language="python")
 

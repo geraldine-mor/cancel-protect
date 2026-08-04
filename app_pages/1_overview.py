@@ -46,6 +46,8 @@ st.markdown("""
             * 🎯 Model Evaluation
                 - Evaluate the ML model's perfomance and describe its main
                   features
+            * 🏢 Project Conclusion
+                - Project summary
 """)
 st.divider()
 

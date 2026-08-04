@@ -79,7 +79,7 @@ The dataset comprises 119,390 rows and 32 columns. Each row represents a hotel b
 * The data has no unique identifiers such as booking or customer ID causing ambiguity in the nature of duplicate rows
 * `customer_type`, `market_segment` and `distribution_channel` all largely serve similar functions - splitting the booking into demographics - there is some overlap and confusion much to be expected in the hospitality sector
 * Weekends defined as Saturday & Sunday is not industry standard, Friday/Saturday weekend designations are more common
-* During modelling it became apparent that there was are issues with the variable `deposit_type` and it had to be excluded
+* During modelling it became apparent that there was were issues with the variable `deposit_type` and it had to be excluded
 
 ## Project Terms and Jargon
 
@@ -228,6 +228,14 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 * *Business Requirement: BR2*
 ![screenshot of model evaluation page](documentation/pages/model_evaluation.png)
 
+### Page 6: 🏢 Project Conclusion
+* Summary of BR1 findings and BR2 model outcome
+* Outcome of all 3 hypotheses
+* Business recommendations arising from the analysis
+* Project limitations and future work
+* *Business Requirement: BR1, BR2*
+![screenshot of conclusion page](documentation/pages/project_conclusion.png)
+
 ## Validation and Testing
 All python pages were validated using the recommended [PEP8 CI Python Linter](https://pep8ci.herokuapp.com/)
 | Directory | File | URL | Screenshot | Notes |
@@ -236,7 +244,6 @@ All python pages were validated using the recommended [PEP8 CI Python Linter](ht
 | app_pages | [2_cancel_predict](https://github.com/geraldine-mor/cancel-protect/blob/main/app_pages/2_cancel_predict.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/app_pages/2_cancel_predict.py) | ![screenshot of validation result](documentation/validation/cancel_predict_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/a226ea02df746e6a129ef9958b2af75d528c1649) |
 | app_pages | [3_cancellation_study](https://github.com/geraldine-mor/cancel-protect/blob/main/app_pages/3_cancellation_study.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/app_pages/3_cancellation_study.py) | ![screenshot of validation result](documentation/validation/cancellation_study_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/a226ea02df746e6a129ef9958b2af75d528c1649) |
 | app_pages | [4_hypothesis_validation](https://github.com/geraldine-mor/cancel-protect/blob/main/app_pages/4_hypothesis_validation.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/app_pages/4_hypothesis_validation.py) | ![screenshot of validation result](documentation/validation/hypothesis_validation_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/91e90e6685b39176bd35b9af43787a255adcf0e3) |
-| app_pages | [5_model_evaluation](https://github.com/geraldine-mor/cancel-protect/blob/main/app_pages/5_model_evaluation.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/app_pages/5_model_evaluation.py) | ![screenshot of validation result](documentation/validation/model_evaluation_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/be3df80fd1d6094b6ef7c80fea7b7300f9002f4a) |
 | app_pages | [5_model_evaluation](https://github.com/geraldine-mor/cancel-protect/blob/main/app_pages/5_model_evaluation.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/app_pages/5_model_evaluation.py) | ![screenshot of validation result](documentation/validation/model_evaluation_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/be3df80fd1d6094b6ef7c80fea7b7300f9002f4a) |
 | src | [charts](https://github.com/geraldine-mor/cancel-protect/blob/main/src/charts.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/src/charts.py) | ![screenshot of validation result](documentation/validation/charts_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/a133c5748d333dd7a3ea9638c97b2b9dc4fc9a32) |
 | src | [custom_transformers](https://github.com/geraldine-mor/cancel-protect/blob/main/src/custom_transformers.py) | [PEP8 CI Link](https://pep8ci.herokuapp.com/https://raw.githubusercontent.com/geraldine-mor/cancel-protect/refs/heads/main/src/custom_transformers.py) | ![screenshot of validation result](documentation/validation/custom_transformers_val_clear.png) | Code changes [commit](https://github.com/geraldine-mor/cancel-protect/commit/a133c5748d333dd7a3ea9638c97b2b9dc4fc9a32) |
@@ -280,8 +287,12 @@ All Jupyter Notebooks were rerun:
 A kanban board was utilised via [GitHub Projects](https://github.com/users/geraldine-mor/projects/9/views/1) to manage the project.
 ![screenshot of kanban board](/documentation/project_board.png)
 
+All remaining [open issues](https://github.com/geraldine-mor/cancel-protect/issues) are related to future features
+![screenshot of open issues](/documentation/open_issues.png)
+
 ## Bugs
 Bugs encountered were recorded in [GitHub Issues](https://github.com/geraldine-mor/cancel-protect/issues?q=label%3A%22bug%22)
+![screenshot of bugs](/documentation/bugs.png)
 
 ## Difference between local and deployed version
 This application is deployed on Heroku's Eco dyno tier, which provides shared, non-dedicated CPU resources. As a result, some pages — particularly the Cancellation Study page, which performs multiple statistical computations (PPS scoring, correlation analysis, guest profiling) — may exhibit noticeable latency during use. This has been mitigated as far as possible through function-level caching (st.cache_data) to avoid redundant recomputation; the residual delay reflects the hosting tier's CPU allocation rather than inefficiency in the underlying data pipeline.
@@ -289,7 +300,7 @@ This application is deployed on Heroku's Eco dyno tier, which provides shared, n
 ## Deployment
 ### Heroku
 
-* The App live link is: https://cancel-protect-03ac919826b5.herokuapp.com/cancellation_study 
+* The App live link is: https://cancel-protect-03ac919826b5.herokuapp.com/
 * Set the .python-version to 3.12
 * The project was deployed to Heroku using the following steps.
 
@@ -301,26 +312,61 @@ This application is deployed on Heroku's Eco dyno tier, which provides shared, n
 6. If the slug size is too large then add large files not required for the app to the .slugignore file.
 
 ## Main Data Analysis and Machine Learning Libraries
-* Here you should list the libraries you used in the project and provide an example(s) of how you used these libraries.
+The project uses the following Python libraries for data analysis, exploratory data analysis, feature engineering, model development, evaluation, and application deployment:
+| Library | Use |
+| --- | --- |
+| [![badge](https://img.shields.io/badge/Pandas-grey?logo=pandas&logoColor=150458)](https://pandas.pydata.org/docs/index.html) | Used for data loading, manipulation, cleaning, and preparation of datasets. DataFrames were used throughout the project for exploratory analysis and preprocessing. |
+| [![badge](https://img.shields.io/badge/NumPy-grey?logo=numpy&logoColor=013243)](https://numpy.org/) | Used for numerical operations and efficient handling of arrays and mathematical transformations during data preparation. |
+| [![badge](https://img.shields.io/badge/matplotlib-grey)](https://matplotlib.org/stable/) |  Used to create static data visualisations, including plots used during exploratory data analysis and model evaluation. |
+| [![badge](https://img.shields.io/badge/seaborn-grey)](https://seaborn.pydata.org/index.html) | Used for statistical visualisations such as distribution plots, correlation heatmaps, and analysis of relationships between variables. |
+| [![badge](https://img.shields.io/badge/YData-Profiling-grey)](https://docs.profiling.ydata.ai/latest/) |  Used to generate automated exploratory data analysis report, helping identify dataset characteristics, missing values, distributions, and potential data quality issues. |
+| [![badge](https://img.shields.io/badge/SciPy-grey?logo=scipy&logoColor=8CAAE6)](https://scipy.org/) | Used to create a point-biserial test for lead_time vs is_canceled |
+| [![badge](https://img.shields.io/badge/PPScore-grey)](https://pypi.org/project/ppscore/) | Used to analyse relationships between variables and identify features with predictive value for the target variable. |
+| [![badge](https://img.shields.io/badge/Pingouin-grey)](https://pingouin-stats.org/) | Used to create a chi-square test for hypotheses 1 & 3 |
+| [![badge](https://img.shields.io/badge/Feature-engine-grey)](https://feature-engine.trainindata.com/en/1.8.x/index.html) |  Used for feature engineering and preprocessing tasks, including transforming and preparing variables for machine learning models. |
+| [![badge](https://img.shields.io/badge/Scikit-learn-grey?logo=scikitlearn&logoColor=F7931E)](https://feature-engine.trainindata.com/en/1.8.x/index.html) | Used for machine learning workflow components including model selection, pipeline, preprocessing, model evaluation metrics, and supporting model development. |
+| [![badge](https://img.shields.io/badge/XGBoost-grey)](https://xgboost.readthedocs.io/en/stable/) | Used to train the machine learning model and generate predictions using gradient boosting techniques. |
+| [![badge](https://img.shields.io/badge/Streamlit-grey?logo=streamlit&logoColor=FF4B4B)](https://docs.streamlit.io/) | Used to develop the interactive web application interface, allowing users to interact with the trained model and view predictions. |
+| [![badge](https://img.shields.io/badge/Kaggle-grey?logo=kaggle&logoColor=20BEFF)](https://www.kaggle.com/) | Used to access and download the project dataset from Kaggle. |
 
 ## Credits 
 
-* In this section, you need to reference where you got your content, media and extra help from. It is common practice to use code from other repositories and tutorials, however, it is important to be very specific about these sources to avoid plagiarism. 
-* You can break the credits section up into Content and Media, depending on what you have included in your project. 
-
 ### Content 
 
-- The text for the Home page was taken from Wikipedia Article A
-- Instructions on how to implement form validation on the Sign-Up page were taken from [Specific YouTube Tutorial](https://www.youtube.com/)
-- The icons in the footer were taken from [Font Awesome](https://fontawesome.com/)
+| Source | Use |
+| --- | --- |
+| [Hotel Booking Demand (Kaggle)](https://www.kaggle.com/datasets/jessemostipak/hotel-booking-demand) | Project dataset |
+| [Antonio, de Almeida & Nunes (2019), *Hotel booking demand datasets*](https://pmc.ncbi.nlm.nih.gov/articles/PMC6297060/) | Consulted to clarify the derivation of the `deposit_type` variable during feature importance analysis and the resulting ablation study (see [09_predictive_model_evaluation](/jupyter_notebooks/09_predictive_model_evaluation.ipynb)) |
+| [ScienceDirect article on the dataset](https://www.sciencedirect.com/science/article/pii/S2352340918315191?via%3Dihub) | Background reading on dataset structure and origin, referenced in Dataset Content |
+| [Gignac & Szodorai (2016), effect size benchmarks](https://www.sciencedirect.com/science/article/abs/pii/S0191886916308194) | Used to contextualise the point-biserial correlation effect size for Hypothesis 2, as an alternative to Cohen's stricter conventions |
+| [peterstatistics.com — Effect Size (Nominal/Nominal)](https://peterstatistics.com/CrashCourse/3-TwoVarUnpair/NomNom/NomNom-2c-Effect-Size.html) | Referenced for interpreting Cramer's V effect sizes in the Chi-Square tests for Hypotheses 1 and 3 |
+| [Code Institute — Churnometer walkthrough project](https://github.com/Code-Institute-Solutions/churnometer) | This project was heavily influenced byt the Churnometer walkthrough project. The `ModelComparison` class used for cross-validated model comparison in [08_predictive_modelling](/jupyter_notebooks/08_predictive_modelling.ipynb) was adapted from this walkthrough project as was the `evaluate_missing_data()` function in [04_cleaning](/jupyter_notebooks/04_cleaning.ipynb) |
+| [PEP8 CI Python Linter](https://pep8ci.herokuapp.com/) | Used to validate PEP8 compliance across all Python files (see [Validation and Testing](#validation-and-testing)) |
 
 ### Media
 
-- The photos used on the home and sign-up page are from This Open-Source site
-- The images used for the gallery page were taken from this other open-source site
+- The project logo was created in collaboration with [Claude AI](https://claude.ai)
 
+## AI Use
 
+Generative AI tools ([Claude](claude.ai) and [ChatGPT](chatgpt.com)) were used selectively during this project as guidance and problem-solving aids. Copilot remained deactivated throughout. Specific uses are outlined below:
 
-## Acknowledgements (optional)
-* Thank the people who provided support through this project.
+* **Planning:** I used the LLMs to generate user stories, workflows and plan out next steps to follow.
+* **Tool susggestions:** Throughout the project I asked the LLMs to suggest appropriate methods, attributes, libraries etc that I could use to solve a problem rather than displaying code solutions enabling me to search the appropriate documentation directly.
+* **Code review, debugging and troubleshooting:** Claude and ChatGPT were used extensively as a debugging aid throughout the project development, AI was used to reason through possible causes and validate fixes.
+* **Assessment criteria review:** Claude was used during the project to cross-check completed work (README sections, notebooks, and dashboard pages) against the Code Institute assessment criteria, helping identify gaps such as missing sections or inconsistencies between the README and the deployed dashboard before submission.
+* **Minor code formatting:** ChatGPT was used to reformat a markdown hyperparameter comparison table into a Python dictionary/DataFrame structure (`hyperparameter_summary()` in `src/data_processing.py`) to avoid line-length issues.
+* **Media generation:** Claude AI was used in collaboration with the developer to generate the CancelProtect logo.
+* **Docstrings:** I used ChatGPT to assist in the generation of docstrings for the Python functions.
+* **Conclusion Page:** Claude AI assisted in pulling together all the main points from previous pages into a single project conclusion.
+
+**Examples**
+![screenshot of AI use example](/documentation/ai/ai_example_1.png)
+![screenshot of AI use example](/documentation/ai/ai_example_2.png)
+![screenshot of AI use example](/documentation/ai/ai_example_3.png)
+
+## Acknowledgements
+* I would like to thank my partner Niall for his support and for picking up my duties so that I could produce this project.
+* I would like to thank Marko Tot my Code Institute facilitator.
+* I would also like to thank my mentor Marcel for his help and encouragement.
 
