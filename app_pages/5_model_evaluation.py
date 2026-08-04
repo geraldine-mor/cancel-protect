@@ -137,7 +137,7 @@ results_container.success("""
      to be considered successful.
 
     Precision for the Not Cancelled class is 0.92, this condition is also
-     met 
+     met
     """)
 
 
