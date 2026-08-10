@@ -124,7 +124,7 @@ The revenue manager at TCS hotels has requested actionable insights and data-dri
 | Business Requirement | Task | Epic | Actions |
 | --- | --- | --- | --- |
 | BR1 | Data visualisation and correlation study | E2 | - Inspect the data <br> - Conduct a correlation study to understand how cancellation interacts with other variables<br> - Plot `is_canceled` against the main variables to visualise insights |
-| BR2 | Classification | E4 | - Build a binary classifier to predict if a booking will cancel<br> - Evaluate model performance |
+| BR2 | Classification | E3 | - Build a binary classifier to predict if a booking will cancel<br> - Evaluate model performance |
 
 ### Rationale to map the business requirements to the Data Visualisations and ML tasks
 * BR1 is exploratory in nature and best served by visualisation and correlation analysis
